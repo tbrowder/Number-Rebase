@@ -1,0 +1,31 @@
+{
+    "perl"        : "6.*",
+    "name"        : "Number::More",
+    "version"     : "1.0.0",
+    "description" : "Provides number base transform functions",
+    "auth"        : "github:tbrowder",
+    "author"      : "github:tbrowder",
+    "authors"     : [ "Tom Browder <tom.browder@gmail.com>" ],
+    "license"     : "Artistic-2.0",
+    "source-url"  : "https://github.com/tbrowder/Number-Rebase-Raku.git",
+    "support"     : {
+        "bugtracker" : "https://github.com/tbrowder/Number-Rebase-Raku/issues"
+    },
+    "provides"    : {
+        "Number::More" : "lib/Number/Rebase.pm6"
+    },
+    "test-depends"     : [
+	"LibUUID",
+	"Test::META"
+    ],
+    "depends" : [
+    ],
+    "resources" : [
+    ],
+    "tags" : [
+	"number", 
+	"base", 
+	"rebase", 
+	"base transform"
+    ]
+}
