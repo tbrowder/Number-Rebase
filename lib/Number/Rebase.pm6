@@ -1,5 +1,16 @@
 unit module Number::Rebase;
 
+# export a debug var for users
+our $DEBUG is export(:DEBUG) = False;
+BEGIN {
+    if %*ENV<NUMBER_REBASE_DEBUG> {
+	$DEBUG = True;
+    }
+    else {
+	$DEBUG = False;
+    }
+}
+
 # export a var for users to set length behavior
 our $LENGTH-HANDLING is export(:DEBUG) = 'ignore'; # other options: 'warn', 'fail'
 my token length-action { ^ :i warn|fail $ }
