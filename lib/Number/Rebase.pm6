@@ -21,8 +21,8 @@ my token octal is export(:token-octal)              { ^ <[0..7]>+ $ }
 my token decimal is export(:token-decimal)          { ^ \d+ $ }              # actually an int
 my token hexadecimal is export(:token-hecadecimal)  { :i ^ <[a..f\d]>+ $ }   # multiple chars
 
-# for general base functions 2..62
-my token all-bases is export(:token-all-bases)      { ^ <[2..9]> | <[1..5]><[0..9]> | 6 <[0..2]> $ }
+# for general base functions 2..91
+my token all-bases is export(:token-all-bases)      { ^ <[2..9]> | <[1..8]><[0..9]> | 9 <[01]>   $ }
 
 # base 2 is binary
 my token base2 is export(:token-base2)              { ^ <[01]>+ $ }
@@ -97,6 +97,45 @@ my token base60 is export(:token-base60)            { ^ <[A..Za..x\d]>+ $ }  # c
 my token base61 is export(:token-base61)            { ^ <[A..Za..y\d]>+ $ }  # case-sensitive, multiple chars
 my token base62 is export(:token-base62)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
 
+# extended to base 91
+my token base63 is export(:token-base63)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base64 is export(:token-base64)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base65 is export(:token-base65)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base66 is export(:token-base66)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base67 is export(:token-base67)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base68 is export(:token-base68)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base69 is export(:token-base69)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base70 is export(:token-base70)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base71 is export(:token-base71)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base72 is export(:token-base72)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base73 is export(:token-base73)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base74 is export(:token-base74)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base75 is export(:token-base75)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base76 is export(:token-base76)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base77 is export(:token-base77)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base78 is export(:token-base78)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base79 is export(:token-base79)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base80 is export(:token-base80)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base81 is export(:token-base81)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base82 is export(:token-base82)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base83 is export(:token-base83)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base84 is export(:token-base84)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base85 is export(:token-base85)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base86 is export(:token-base86)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base87 is export(:token-base87)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base88 is export(:token-base88)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base89 is export(:token-base89)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base90 is export(:token-base90)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+my token base91 is export(:token-base91)            { ^ <[A..Za..z\d]>+ $ }  # case-sensitive, multiple chars
+
+# The extended character set (29 more chars) after base62 (from
+# http://base91.sourceforge.net/):
+#
+#                   1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2
+# 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
+# ! # $ % & ( ) * + , . / : ; < = > ? @ [ ] ^ _ ` { | } ~ "
+
+
 our @base is export(:base) = [
 '0',
 '1',
@@ -109,27 +148,40 @@ our @base is export(:base) = [
 &base40, &base41, &base42, &base43, &base44, &base45, &base46,
 &base47, &base48, &base49, &base50, &base51, &base52, &base53,
 &base54, &base55, &base56, &base57, &base58, &base59, &base60,
-&base61, &base62
+&base61, &base62, &base63, &base64, &base65, &base66, &base67, &base68, &base69, &base70,
+&base71, &base72, &base73, &base74, &base75, &base76, &base77, &base78, &base79, &base80,
+&base81, &base82, &base83, &base84, &base85, &base86, &base87, &base88, &base89, &base90,
+&base91
 ];
 
-# standard digit set for bases 2 through 62 (char 0 through 61)
+# standard digit set for bases 2 through 91 (char 0 through 90)
 # the array of digits is indexed by their decimal value
-our @dec2digit is export(:dec2digit) = <
-    0 1 2 3 4 5 6 7 8 9
-    A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
-    a b c d e f g h i j k l m n o p q r s t u v w x y z
-    >;
+our @dec2digit is export(:dec2digit) = [
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+    'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+    'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd',
+    'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+    'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
+    'y', 'z', '!', '#', '$', '%', '&', '(', ')', '*',
+    '+', ',', '.', '/', ':', ';', '<', '=', '>', '?',
+    '@', '[', ']', '^', '_', '`', '{', '|', '}', '~',
+    '"',
+    ];
 
-# standard digit set for bases 2 through 62 (char 0 through 61)
+# standard digit set for bases 2 through 91 (char 0 through 61)
 # the hash is comprised of digit keys and their decimal value
 our %digit2dec is export(:digit2dec) = [
-    0 =>  0, 1 =>  1, 2 =>  2, 3 =>  3, 4 =>  4, 5 =>  5, 6 =>  6, 7 =>  7, 8 =>  8, 9 =>  9,
-    A => 10, B => 11, C => 12, D => 13, E => 14, F => 15, G => 16, H => 17, I => 18, J => 19,
-    K => 20, L => 21, M => 22, N => 23, O => 24, P => 25, Q => 26, R => 27, S => 28, T => 29,
-    U => 30, V => 31, W => 32, X => 33, Y => 34, Z => 35, a => 36, b => 37, c => 38, d => 39,
-    e => 40, f => 41, g => 42, h => 43, i => 44, j => 45, k => 46, l => 47, m => 48, n => 49,
-    o => 50, p => 51, q => 52, r => 53, s => 54, t => 55, u => 56, v => 57, w => 58, x => 59,
-    y => 60, z => 61
+    '0' =>  0, '1' =>  1, '2' =>  2, '3' =>  3, '4' =>  4, '5' =>  5, '6' =>  6, '7' =>  7, '8' =>  8, '9' =>  9,
+    'A' => 10, 'B' => 11, 'C' => 12, 'D' => 13, 'E' => 14, 'F' => 15, 'G' => 16, 'H' => 17, 'I' => 18, 'J' => 19,
+    'K' => 20, 'L' => 21, 'M' => 22, 'N' => 23, 'O' => 24, 'P' => 25, 'Q' => 26, 'R' => 27, 'S' => 28, 'T' => 29,
+    'U' => 30, 'V' => 31, 'W' => 32, 'X' => 33, 'Y' => 34, 'Z' => 35, 'a' => 36, 'b' => 37, 'c' => 38, 'd' => 39,
+    'e' => 40, 'f' => 41, 'g' => 42, 'h' => 43, 'i' => 44, 'j' => 45, 'k' => 46, 'l' => 47, 'm' => 48, 'n' => 49,
+    'o' => 50, 'p' => 51, 'q' => 52, 'r' => 53, 's' => 54, 't' => 55, 'u' => 56, 'v' => 57, 'w' => 58, 'x' => 59,
+    'y' => 60, 'z' => 61, '!' => 62, '#' => 63, '$' => 64, '%' => 65, '&' => 66, '(' => 67, ')' => 68, '*' => 69,
+    '+' => 70, ',' => 71, '.' => 72, '/' => 73, ':' => 74, ';' => 75, '<' => 76, '=' => 77, '>' => 78, '?' => 79,
+    '@' => 80, '[' => 81, ']' => 82, '^' => 83, '_' => 84, '`' => 85, '{' => 86, '|' => 87, '}' => 88, '~' => 89,
+    '"' => 90,
 ];
 
 my token base { ^ 2|8|10|16 $ }

@@ -3,14 +3,14 @@ use Test;
 
 use Number::Rebase :ALL;
 
-plan 61;
+plan 90;
 
 # error conditions
 #dies-ok { rebase('Z', 40, 3), 2; }, "incorrect base number for input";
 
 
 my $base      =  2;
-my $last-base = 62;
+my $last-base = 91;
 
 # default
 for $base..$last-base -> $base {
