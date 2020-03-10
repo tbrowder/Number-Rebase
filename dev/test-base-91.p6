@@ -2,13 +2,61 @@
 
 use lib <../lib>;
 
-use Number::More :ALL;
+use Number::Rebase :ALL;
+
+my $debug = 0;
+
+say "======================================";
+my $hex = "ffffffffffffffffffffffffffffffff";
+my $n1 = $hex.chars;
+my $dec = str2num($hex, 16);
+say "dec = $dec";
+
+my $res = num2str($dec, 91);
+my $n2 = $res.chars;
+say "  input:  '$hex' (base: 16); num chars = $n1";
+say "  output: '$res' (base: 91); num chars = $n2";
+
+# try to round trip
+$dec = str2num($res, 91);
+say "  input:  '$res' (base: 91); num chars = $n2";
+
+$res = num2str $dec, 16;
+$n2 = $res.chars;
+say "  output: '$res' (base: 16); num chars = $n2";
+
+# basic test from Wolfram:
+
+my @ans = <1010 101 22 20 14 13 12 11 10 A>;
+my $deci = 10;
+my @bas = 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 91;
+for @bas -> $b {
+    my $ans = num2str $deci, $b;
+    say "10 in base $b : $ans";
+}
+
+#my @ans = <1010 101 22 20 14 13 12 11 10 A>;
+#my $deci = 10;
+@bas = 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 91;
+for @bas -> $b {
+    my $int  = floor $b;
+    my $frac = 0.1;
+
+    my ($ans1, $ans2) = num2str $deci, $b, $frac;
+    say "10.1 in base $b : '$ans1'.'$ans2'";
+}
+
+$deci = 14; #14.3;
+my ($ans1, $ans2) = num2str $deci, 3, 0.3;
+say "14.3 in base 3 : '$ans1'.'$ans2'";
+
+exit;
 
 # a test set of numbers and bases
-my $nums    = 100; # nums to choose
-my $ndigits = 5;   # num digits per number
+my $nums    = 101; # nums to choose
+my $ndigits = 91;   # num digits per number
 
-my @b = 2..62; # set of allowable bases
+my @b = 2..91; # 91 # set of allowable bases
 my @p = @b; # need an array to pick from since @b is used in a loop
 for 1..$nums -> $i {
     # pick digits at random
@@ -25,145 +73,103 @@ for 1..$nums -> $i {
            $base-o = @p.pick.UInt;
        }
 
-       # now we should have two separate bases of set @b
-       if ($base-i < 37) && ($base-o < 37) {
-           # skip for now
-           next;
-       }
+       note "  base-i: $base-i; base-o: $base-o" if $debug;
 
-       say "  base-i: $base-i; base-o: $base-o";
+       # need decimal intermediary
+       my $dec = str2num($num-i, $base-i);
+       #note "dec = $dec";
+       my $res = num2str($dec, $base-o);
 
-       my $res;
-       if ($base-i < 37) && ($base-o < 37) {
-           # skip for now
-           next;
-	   $res = rebase($num-i, $base-i, $base-o);
+       if 1 || $debug {
+           note "DEBUG:  input:  '$num-i' (base: $base-i)";
+           note "        output: '$res'   (base: $base-o)";
        }
-       elsif $base-i == 10 {
-	   $res = _from-dec-to-b37-b62($num-i, $base-o);
-       }
-       elsif $base-o == 10 {
-	   $res = _to-dec-from-b37-b62($num-i, $base-i);
-       }
-       else {
-	   # need decimal intermediary
-	   my $dec = _to-dec-from-b37-b62($num-i, $base-i);
-           say "dec = $dec";
-	   $res = _from-dec-to-b37-b62($dec, $base-o);
-       }
-       say "  input: $num-i (base: $base-i); output: $res (base: $base-o)" if $res;
     }
 }
 
-sub _to-dec-from-b37-b62($num,
-			 #UInt $bi where { 36 < $bi < 63 }
-			 UInt $bi
-			 --> Cool
-			) is export(:_to-dec-from-b37-b62) {
 
-    # see simple algorithm for base to dec:
-    #`{
+# was _to-dec-from-b37-b91
+# Extends routine 'parse-base' to base 91 for unsigned integers.
+# Converts a string with a base (radix) of $base to its Numeric equivalent.
+sub str2num(Str:D $num is copy,
+            UInt $base where 2..91
+            --> Numeric) is export(:str2num) {
 
-Let's say you have a number
-
-  10121 in base 3
-
-and you want to know what it is in base 10.  Well, in base three the
-place values [from the highest] are
-
-   4   3  2  1  0 <= digit place (position)
-  81, 27, 9, 3, 1 <= value: digit x base ** place
-
-so we have 1 x 81 + 0 x 27 + 1 x 9 + 2 x 3 + 1 x 1
-
-  81 + 0 + 9 + 6 + 1 = 97
-
-that is how it works.  You just take the number, figure out the place
-values, and then add them together to get the answer.  Now, let's do
-one the other way.
-
-45 in base ten (that is the normal one.) Let's convert it to base
-five.
-
-Well, in base five the place values will be 125, 25, 5, 1
-
-We won't have any 125's but we will have one 25. Then we will have 20
-left.  That is four 5's, so in base five our number will be 140.
-
-Hope that makes sense.  If you don't see a formula, try to work out a
-bunch more examples and they should get easier.
-
--Doctor Ethan,  The Math Forum
-
+    if $base < 37 {
+        $num .= uc;
     }
+    # reverse the digits of the input number???
+    my @num'r = $num.comb; #.reverse;
+    my $place = $num.chars - 1;
 
-    # reverse the digits of the input number
-    my @num'r = $num.comb.reverse;
-    my $place = $num.chars;
-
-    my $dec = 0;
+    my UInt $dec = 0;
     for @num'r -> $digit {
-	--$place; # first place is num chars - 1
 	# need to convert the digit to dec first
 	my $digit-val = %digit2dec{$digit};
-	my $val = $digit-val * $bi ** $place;
+	my $val = $digit-val * $base ** $place;
 	$dec += $val;
-    }
-    return $dec;
-} # _to-dec-from-b37-b62
-
-sub _from-dec-to-b37-b62(UInt $x'dec ,
-			 #UInt $base-o where { 36 < $base-o < 63 }
-			 UInt $base-o
-		         --> Str) is export(:_from-dec-to-b37-b62) {
-    # see Wolfram's solution (article Base)
-
-    # need ln_b x = ln x / ln b
-    my $log_b'x = log $x'dec / log $base-o; # note p6 routine 'log' is math function 'ln' if no optional base arg
-
-    # get place index of first digit
-    my $n = floor $log_b'x;
-
-    # now the algorithm
-    # we need @r below to be a fixed array of size $n + 2
-    my @r[$n + 2];
-    my @a[$n + 1];
-
-    @r[$n] = $x'dec;
-
-    # work through the $x'dec.chars places (????)
-    # for now just handle integers (later, real, i.e., digits after a fraction point)
-    for $n...0 -> $i { # <= Wolfram text is misleading here
-	my $b'i  = $base-o ** $i;
-	@a[$i]   = floor (@r[$i] / $b'i);
-
-        say "  i = $i; a = '@a[$i]'; r = '@r[$i]'";
-
-        # calc r for next iteration
-	@r[$i-1] = @r[$i] - @a[$i] * $b'i if $i > 0;
+	--$place; # first place is num chars - 1
     }
 
-    #=begin pod
-    # @a contains the index of the digits of the number in the new base
-    my $x'b = '';
-    # digits are in the reversed order
-    for @a.reverse -> $di {
-        my $digit = @dec2digit[$di];
-        $x'b ~= $digit;
+    if $DEBUG {
+        note qq:to/HERE/;
+        DEBUG: sub _to_dec_from_baseN
+               input \$num      = '{$num}'
+               input \$base     = '$base';
+               calculated \$dec = '$dec';
+        HERE
     }
-    # trim leading zeroes
-    $x'b ~~ s/^ 0+ /0/;
-    $x'b ~~ s:i/^ 0 (<[0..9a..z]>) /$0/;
+    $dec;
+} # str2num
 
-    return $x'b;
-    #=end pod
-} # _from-dec-to-b37-b62
+# this version looks excellent for the integer part!
+multi sub num2str(UInt:D $dec, UInt:D $base --> Str) {
+    my $int = '';
+    my $rem = $dec;
+    loop {
+        my $di  = $rem mod $base; # $di is an index into the base's alphabet
+        $rem = $rem div $base;
+        $int = @dec2digit[$di] ~ $int;
+        last if !$rem;
+    }
+    $int;
+}
 
-sub rebase-b37-b62($x, $bi, $bo) {
-    # error checks (see sub rebase)
-    # is x valid member of base bi?
-    # are bi and bo valid bases?
-    # are bi or bo > 36?
-    my $err = 0;
+multi sub num2str(Numeric:D $dec where {$_ >= 0},
+                  UInt:D $base where 2..90, # we use the '.' as the radix point
+                  :$ndigits = 10, #= number of desired fractional digits
+                  --> Str) {
+    # separate into integer and fractional parts
 
+    # convert integer part
+
+    # convert fractional part
+
+    # combine parts
+}
+
+# looking good! modify to take positive real number or unsigned int
+# then look at negative numbers
+multi sub num2str(UInt:D $dec,
+                  UInt:D $base,
+                  Numeric:D $Frac where {0 < $_ < 1},
+                  :$ndigits = 10, #= number of desired fractional digits
+                  --> List) {
+    my $di; #= digit index
+    my $int  = num2str $dec, $base;
+
+    my $m'n  = $Frac;
+    my $frac = '';
+    my $n = $ndigits;
+    loop {
+        $m'n *= $base;
+        my $m = floor $m'n;
+        --$n;
+        $frac ~= @dec2digit[$m];
+        last if !$m'n;
+        last if !$n;
+
+        $m'n -= $m;
+    }
+    ($int, $frac);
 }

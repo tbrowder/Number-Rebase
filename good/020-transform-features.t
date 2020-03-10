@@ -3,7 +3,7 @@ use Test;
 
 use Number::Rebase :ALL;
 
-$Number::More::LENGHT-HANDLING = 'waRn';
+$Number::More::LENGTH-HANDLING = 'waRn';
 
 plan 32;
 

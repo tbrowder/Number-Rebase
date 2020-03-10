@@ -57,3 +57,7 @@ are often called something else, e.g., Base62ner(???).
 6. [List of numeral systems](https://en.wikipedia.org/wiki/List_of_numeral_systems)
 
 7. [Simple conversion algorithms](http://mathforum.org/library/drmath/view/57074.html)
+
+7a. [Converting Bases](http://mathforum.org/library/drmath/view/55824.html)
+
+8. [Base 91](http://base91.sourceforge.net/)

@@ -1,6 +1,6 @@
 #!/usr/bin/env perl6
 
-use Text::More :strip-comment;
+use Text::Utils :strip-comment;
 
 class eg {
     has @!w;   # used for construction

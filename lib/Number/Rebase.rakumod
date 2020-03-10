@@ -11,17 +11,22 @@ BEGIN {
     }
 }
 
-# export a var for users to set length behavior
+$DEBUG = 0;
+
+# Export a var for users to set length behavior
 our $LENGTH-HANDLING is export(:DEBUG) = 'ignore'; # other options: 'warn', 'fail'
 my token length-action { ^ :i warn|fail $ }
 
-# define tokens for common regexes (no prefixes are allowed)
+# Define tokens for common regexes (no prefixes are allowed)
 my token binary is export(:token-binary)           { ^ <[01]>+ $ }
 my token octal is export(:token-octal)             { ^ <[0..7]>+ $ }
 my token decimal is export(:token-decimal)         { ^ \d+ $ }              # actually an int
+# Note default Raku hex input handling is mixed case and upper-case for output.
+# This module handles either input but hex input MUST be either all upper or all lower
+# case to preserve output.
 my token hexadecimal is export(:token-hecadecimal) { :i ^ <[a..f\d]>+ $ }   # multiple chars
 
-# for general base functions 2..91
+# For general base functions 2..91
 my token all-bases is export(:token-all-bases)     { ^ <[2..9]> | <[1..8]><[0..9]> | 9 <[01]>   $ }
 
 # base 2 is binary
@@ -66,7 +71,7 @@ my token base34 is export(:token-base34)           { :i ^ <[a..x\d]>+ $ }   # mu
 my token base35 is export(:token-base35)           { :i ^ <[a..y\d]>+ $ }   # multiple chars
 my token base36 is export(:token-base36)           { :i ^ <[a..z\d]>+ $ }   # multiple chars
 
-# char sets for higher bases are case sensitive
+# char sets for higher bases (> 36) are case sensitive
 my token base37 is export(:token-base37)           { ^ <[A..Za\d]>+ $ }     # case-sensitive, multiple chars
 my token base38 is export(:token-base38)           { ^ <[A..Zab\d]>+ $ }    # case-sensitive, multiple chars
 my token base39 is export(:token-base39)           { ^ <[A..Zabc\d]>+ $ }   # case-sensitive, multiple chars
@@ -108,42 +113,60 @@ my token base69 is export(:token-base69)           { ^ <[A..Za..z\d ! # $ % & ( 
 my token base70 is export(:token-base70)           { ^ <[A..Za..z\d ! # $ % & ( ) * ]>+ $ }  # case-sensitive, multiple chars
 my token base71 is export(:token-base71)           { ^ <[A..Za..z\d ! # $ % & ( ) * + ]>+ $ }  # case-sensitive, multiple chars
 my token base72 is export(:token-base72)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , ]>+ $ }  # case-sensitive, multiple chars
-my token base73 is export(:token-base73)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . ]>+ $ }  # case-sensitive, multiple chars
-my token base74 is export(:token-base74)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / ]>+ $ }  # case-sensitive, multiple chars
-my token base75 is export(:token-base75)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ]>+ $ }  # case-sensitive, multiple chars
-my token base76 is export(:token-base76)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ; ]>+ $ }  # case-sensitive, multiple chars
-my token base77 is export(:token-base77)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ; < ]>+ $ }  # case-sensitive, multiple chars
-my token base78 is export(:token-base78)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ; < = ]>+ $ }  # case-sensitive, multiple chars
-my token base79 is export(:token-base79)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ; < = > ]>+ $ }  # case-sensitive, multiple chars
-my token base80 is export(:token-base80)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ; < = > ? ]>+ $ }  # case-sensitive, multiple chars
-my token base81 is export(:token-base81)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ; < = > ? @ ]>+ $ }  # case-sensitive, multiple chars
-my token base82 is export(:token-base82)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ; < = > ? @ [ ]>+ $ }  # case-sensitive, multiple chars
-my token base83 is export(:token-base83)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ; < = > ? @ [ \] ]>+ $ }  # case-sensitive, multiple chars
-my token base84 is export(:token-base84)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ; < = > ? @ [ \] ^ ]>+ $ }  # case-sensitive, multiple chars
-my token base85 is export(:token-base85)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ; < = > ? @ [ \] ^ _ ]>+ $ }  # case-sensitive, multiple chars
-my token base86 is export(:token-base86)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ; < = > ? @ [ \] ^ _ ` ]>+ $ }  # case-sensitive, multiple chars
-my token base87 is export(:token-base87)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ; < = > ? @ [ \] ^ _ ` { ]>+ $ }  # case-sensitive, multiple chars
-my token base88 is export(:token-base88)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ; < = > ? @ [ \] ^ _ ` { | ]>+ $ }  # case-sensitive, multiple chars
-my token base89 is export(:token-base89)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ; < = > ? @ [ \] ^ _ ` { | } ]>+ $ }  # case-sensitive, multiple chars
-my token base90 is export(:token-base90)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ; < = > ? @ [ \] ^ _ ` { | } ~ ]>+ $ }  # case-sensitive, multiple chars
-my token base91 is export(:token-base91)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , . / : ; < = > ? @ [ \] ^ _ ` { | } ~ "]>+ $ }  # case-sensitive, multiple chars
 
-# The extended character set (29 more chars) after base62 (from
-# http://base91.sourceforge.net/):
-#
-#                   1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 2 2 2 2
-# 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
-# ! # $ % & ( ) * + , . / : ; < = > ? @ [ ] ^ _ ` { | } ~ "
+# at this point we swap the original positions of the period and the double quotation mark
+# in order to use the period as a radix point for bases 2..90
+my token base73 is export(:token-base73)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " ]>+ $ }  # case-sensitive, multiple chars
+my token base74 is export(:token-base74)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / ]>+ $ }  # case-sensitive, multiple chars
+my token base75 is export(:token-base75)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ]>+ $ }  # case-sensitive, multiple chars
+my token base76 is export(:token-base76)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; ]>+ $ }  # case-sensitive, multiple chars
+my token base77 is export(:token-base77)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < ]>+ $ }  # case-sensitive, multiple chars
+my token base78 is export(:token-base78)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = ]>+ $ }  # case-sensitive, multiple chars
+my token base79 is export(:token-base79)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ]>+ $ }  # case-sensitive, multiple chars
+my token base80 is export(:token-base80)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ? ]>+ $ }  # case-sensitive, multiple chars
+my token base81 is export(:token-base81)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ? @ ]>+ $ }  # case-sensitive, multiple chars
+my token base82 is export(:token-base82)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ? @ [ ]>+ $ }  # case-sensitive, multiple chars
+my token base83 is export(:token-base83)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ? @ [ \] ]>+ $ }  # case-sensitive, multiple chars
+my token base84 is export(:token-base84)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ? @ [ \] ^ ]>+ $ }  # case-sensitive, multiple chars
+my token base85 is export(:token-base85)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ? @ [ \] ^ _ ]>+ $ }  # case-sensitive, multiple chars
+my token base86 is export(:token-base86)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ? @ [ \] ^ _ ` ]>+ $ }  # case-sensitive, multiple chars
+my token base87 is export(:token-base87)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ? @ [ \] ^ _ ` { ]>+ $ }  # case-sensitive, multiple chars
+my token base88 is export(:token-base88)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ? @ [ \] ^ _ ` { | ]>+ $ }  # case-sensitive, multiple chars
+my token base89 is export(:token-base89)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ? @ [ \] ^ _ ` { | } ]>+ $ }  # case-sensitive, multiple chars
+my token base90 is export(:token-base90)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ? @ [ \] ^ _ ` { | } ~ ]>+ $ }  # case-sensitive, multiple chars
+# note base91 cannot have the period as a radix point (but we might could handle it
+# with a unicode char of some kind)
+my token base91 is export(:token-base91)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ? @ [ \] ^ _ ` { | } ~ .]>+ $ }  # case-sensitive, multiple chars
 
+#| The original extended character set (29 more chars) after base62 to base91
+#| (from http://base91.sourceforge.net/):
+#|
+#|                   1                   2
+#| 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
+#| ! # $ % & ( ) * + , . / : ; < = > ? @ [ ] ^ _ ` { | } ~ "
+
+#| In order to use the period as the radix point for fractions
+#| we swap the period and the double quotation mark.
+
+#|                   1                   2
+#| 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9
+#| ! # $ % & ( ) * + , " / : ; < = > ? @ [ ] ^ _ ` { | } ~ .
+
+#| Then,
+#| for bases 2 through 90 the radix point is the period. For base 91
+#| we provide a separate routine to return the integer and
+#| fractional parts separately.
 
 our @base is export(:base) = [
+# bases 2-36: use Raku routines
 '0',
 '1',
-&base2, &base3, &base4, &base5, &base6, &base7, &base8, &base9,
+&base2,  &base3,  &base4,  &base5,  &base6,  &base7,  &base8,  &base9,
 &base10, &base11, &base12, &base13, &base14, &base15, &base16, &base17, &base18, &base19,
 &base20, &base21, &base22, &base23, &base24, &base25, &base26, &base27, &base28, &base29,
 &base30, &base31, &base32, &base33, &base34, &base35, &base36,
 
+# bases 37-91: use this module
 &base37, &base38, &base39,
 &base40, &base41, &base42, &base43, &base44, &base45, &base46,
 &base47, &base48, &base49, &base50, &base51, &base52, &base53,
@@ -154,34 +177,34 @@ our @base is export(:base) = [
 &base91
 ];
 
-# standard digit set for bases 2 through 91 (char 0 through 90)
-# the array of digits is indexed by their decimal value
+#| Standard digit set for bases 2 through 91 (char 0 through 91).
+#| The array of digits is indexed by their decimal value.
 our @dec2digit is export(:dec2digit) = [
-    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-    'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
-    'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd',
-    'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
-    'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x',
-    'y', 'z', '!', '#', '$', '%', '&', '(', ')', '*',
-    '+', ',', '.', '/', ':', ';', '<', '=', '>', '?',
-    '@', '[', ']', '^', '_', '`', '{', '|', '}', '~',
-    '"',
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', # 10
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', # 20
+    'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', # 30
+    'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', # 40
+    'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', # 50
+    'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', # 60
+    'y', 'z', '!', '#', '$', '%', '&', '(', ')', '*', # 70
+    '+', ',', '"', '/', ':', ';', '<', '=', '>', '?', # 80
+    '@', '[', ']', '^', '_', '`', '{', '|', '}', '~', # 90
+    '.',                                              # 91
     ];
 
-# standard digit set for bases 2 through 91 (char 0 through 61)
-# the hash is comprised of digit keys and their decimal value
+#| Standard digit set for bases 2 through 91 (char 0 through 90).
+#| The hash is comprised of digit keys and their decimal value.
 our %digit2dec is export(:digit2dec) = [
-    '0' =>  0, '1' =>  1, '2' =>  2, '3' =>  3, '4' =>  4, '5' =>  5, '6' =>  6, '7' =>  7, '8' =>  8, '9' =>  9,
-    'A' => 10, 'B' => 11, 'C' => 12, 'D' => 13, 'E' => 14, 'F' => 15, 'G' => 16, 'H' => 17, 'I' => 18, 'J' => 19,
-    'K' => 20, 'L' => 21, 'M' => 22, 'N' => 23, 'O' => 24, 'P' => 25, 'Q' => 26, 'R' => 27, 'S' => 28, 'T' => 29,
-    'U' => 30, 'V' => 31, 'W' => 32, 'X' => 33, 'Y' => 34, 'Z' => 35, 'a' => 36, 'b' => 37, 'c' => 38, 'd' => 39,
-    'e' => 40, 'f' => 41, 'g' => 42, 'h' => 43, 'i' => 44, 'j' => 45, 'k' => 46, 'l' => 47, 'm' => 48, 'n' => 49,
-    'o' => 50, 'p' => 51, 'q' => 52, 'r' => 53, 's' => 54, 't' => 55, 'u' => 56, 'v' => 57, 'w' => 58, 'x' => 59,
-    'y' => 60, 'z' => 61, '!' => 62, '#' => 63, '$' => 64, '%' => 65, '&' => 66, '(' => 67, ')' => 68, '*' => 69,
-    '+' => 70, ',' => 71, '.' => 72, '/' => 73, ':' => 74, ';' => 75, '<' => 76, '=' => 77, '>' => 78, '?' => 79,
-    '@' => 80, '[' => 81, ']' => 82, '^' => 83, '_' => 84, '`' => 85, '{' => 86, '|' => 87, '}' => 88, '~' => 89,
-    '"' => 90,
+    '0' =>  0, '1' =>  1, '2' =>  2, '3' =>  3, '4' =>  4, '5' =>  5, '6' =>  6, '7' =>  7, '8' =>  8, '9' =>  9, # 10
+    'A' => 10, 'B' => 11, 'C' => 12, 'D' => 13, 'E' => 14, 'F' => 15, 'G' => 16, 'H' => 17, 'I' => 18, 'J' => 19, # 20
+    'K' => 20, 'L' => 21, 'M' => 22, 'N' => 23, 'O' => 24, 'P' => 25, 'Q' => 26, 'R' => 27, 'S' => 28, 'T' => 29, # 30
+    'U' => 30, 'V' => 31, 'W' => 32, 'X' => 33, 'Y' => 34, 'Z' => 35, 'a' => 36, 'b' => 37, 'c' => 38, 'd' => 39, # 40
+    'e' => 40, 'f' => 41, 'g' => 42, 'h' => 43, 'i' => 44, 'j' => 45, 'k' => 46, 'l' => 47, 'm' => 48, 'n' => 49, # 50
+    'o' => 50, 'p' => 51, 'q' => 52, 'r' => 53, 's' => 54, 't' => 55, 'u' => 56, 'v' => 57, 'w' => 58, 'x' => 59, # 60
+    'y' => 60, 'z' => 61, '!' => 62, '#' => 63, '$' => 64, '%' => 65, '&' => 66, '(' => 67, ')' => 68, '*' => 69, # 70
+    '+' => 70, ',' => 71, '"' => 72, '/' => 73, ':' => 74, ';' => 75, '<' => 76, '=' => 77, '>' => 78, '?' => 79, # 80
+    '@' => 80, '[' => 81, ']' => 82, '^' => 83, '_' => 84, '`' => 85, '{' => 86, '|' => 87, '}' => 88, '~' => 89, # 90
+    '.' => 90,                                                                                                    # 91
 ];
 
 my token base { ^ 2|8|10|16 $ }
@@ -194,6 +217,18 @@ sub pad-number($num is rw,
 	       Bool :$suffix = False,
                Bool :$LC = False,
 	      ) {
+
+    =begin comment
+    # consistify case handling
+    my $uc = $hex ~~ /^ &hexcaps $/ ?? 'uc'
+                                    !! $hex ~~ /^ &hexlower $/ 'lc' !! 'mc';
+    if $uc eq 'mc' || $uc eq 'uc' {
+        $uc = 'uc';
+    }
+    else {
+        $uc = 'uc';
+    }
+    =end comment
 
     # this also checks for length error, upper-lower casing, and handling
     if $base > 10 && $base < 37 {
@@ -236,6 +271,7 @@ sub pad-number($num is rw,
         when $base eq '8'  { $num = '0o' ~ $num }
         when $base eq '16' { $num = '0x' ~ $num }
     }
+
 } # pad-number
 
 #------------------------------------------------------------------------------
@@ -487,7 +523,7 @@ sub rebase($num-i,
 
     # make sure incoming number is in the right base
     if $num-i !~~ @base[$base-i] {
-        die "FATAL: Incoming number in sub 'rebase' is not a member of base '$base-i'.";
+        die "FATAL: Incoming number ($num-i) in sub 'rebase' is not a member of base '$base-i'.";
     }
 
     # check for same bases
@@ -521,43 +557,56 @@ sub rebase($num-i,
         note "\nNOTE: Use function '{$bi}2{$bo}' instead for an easier interface.";
     }
 
+    #=begin comment
+    if 10 < $base-i < 36 && $num-i ~~ /Str/ {
+        # we MUST use upper case
+        $num-i .= uc;
+    }
+    #=end comment
+
     # treatment varies if in or out base is decimal
     my $num-o;
     if $base-i == 10 {
 	if $base-o < 37 {
+            # use Raku routine
             $num-o = $num-i.base: $base-o;
 	}
 	else {
-            $num-o = _from-dec-to-b37-b62 $num-i, $base-o;
+            $num-o = _from-dec-to-b37-b91 $num-i, $base-o;
 	}
     }
     elsif $base-o == 10 {
 	if $base-i < 37 {
+            # use Raku routine
             $num-o = parse-base $num-i, $base-i;
 	}
 	else {
-	    $num-o = _to-dec-from-b37-b62 $num-i, $base-o;
+	    $num-o = _to-dec-from-b37-b91 $num-i, $base-o;
 	}
     }
     elsif ($base-i < 37) && ($base-o < 37) {
+        # use Raku routine
         # need decimal as intermediary
         my $dec = parse-base $num-i, $base-i;
         $num-o  = $dec.base: $base-o;
     }
     else {
-        # need decimal as intermediary
-	my $dec;
+        # may need decimal as intermediary
+	my $dec = 0;
 	if $base-i < 37 {
+            # use Raku routine
             $dec = parse-base $num-i, $base-i;
 	}
 	else {
-	    $dec = _to-dec-from-b37-b62 $num-i, $base-i;
+	    $dec = _to-dec-from-b37-b91 $num-i, $base-i;
 	}
+
 	if $base-o < 37 {
+            # use Raku routine
             $num-o = $dec.base: $base-o;
 	}
 	else {
-            $num-o = _from-dec-to-b37-b62 $dec, $base-o;
+            $num-o = _from-dec-to-b37-b91 $dec, $base-o;
 	}
     }
 
@@ -585,12 +634,11 @@ sub rebase($num-i,
     return $num-o;
 } # rebase
 
-
-sub _to-dec-from-b37-b62($num,
-			 UInt $bi where { 36 < $bi < 63 }
-			 #UInt $bi
+# str2num
+sub _to-dec-from-b37-b91($num,
+			 UInt $bi where { 36 < $bi < 92 }
 			 --> Cool
-			) is export(:_to-dec-from-b37-b62) {
+			) is export(:_to-dec-from-b37-b91) {
 
     # see simple algorithm for base to dec:
     #`{
@@ -626,7 +674,7 @@ bunch more examples and they should get easier.
 
 -Doctor Ethan,  The Math Forum
 
-    }
+    } # end of in-line comment
 
     # reverse the digits of the input number
     my @num'r = $num.comb.reverse;
@@ -640,8 +688,18 @@ bunch more examples and they should get easier.
 	my $val = $digit-val * $bi ** $place;
 	$dec += $val;
     }
+
+    if $DEBUG {
+        note qq:to/HERE/;
+        DEBUG: sub _to_dec_from_baseN
+               input \$num      = '{$num}'
+               input \$base-i   = '$bi';
+               calculated \$dec = '$dec';
+        HERE
+    }
+
     return $dec;
-} # _to-dec-from-b37-b62
+} # _to-dec-from-b37-b91
 
 #`{
 # begin multi-line comment
@@ -662,27 +720,39 @@ where r_n = x and
 
   r_(i-1) = r_i - a_i * b^i
 
-for i = n, n -1, ..., 1, 0
+for i = n, n - 1, ..., 1, 0
 
 to convert between logarithms in different bases, the formula:
 
   log_b x = ln x / ln b
 
-# end of multi-line comment
+# end of multi-line comment:
 }
 
-sub _from-dec-to-b37-b62(UInt $x'dec ,
-			 UInt $base-o where { 36 < $base-o < 63 }
-			 #UInt $base-o
-		         --> Str) is export(:_from-dec-to-b37-b62) {
+sub _from-dec-to-b37-b91(UInt $x'dec ,
+			 UInt $base-o where { 36 < $base-o < 92 }
+		         --> Str) is export(:_from-dec-to-b37-b91) {
 
     # see Wolfram's solution (article Base, see notes above)
 
-    # need ln_b x = ln x / ln b
+    # need log_b x = ln x / ln b
 
-    # note p6 routine 'log' is math function 'ln' if no optional base
+    # note Raku routine 'log' is math function natural log 'ln' if no optional base
     # arg is entered
-    my $log_b'x = log $x'dec / log $base-o;
+    # my $log_b'x = log $x'dec / log $base-o;
+    my $numerator   = log $x'dec;
+    my $denominator = log $base-o;
+    my $log_b'x = $numerator / $denominator;
+    if $DEBUG {
+        note qq:to/HERE/;
+        DEBUG: sub _from_dec_to_baseN
+               input \$x'dec  = '{$x'dec}'
+               input \$base-o = '$base-o';
+               calculated ln \$x'dec = '$numerator';
+               calculated ln \base-o = '$denominator';
+               calculated \$log_b'x  = '{$log_b'x}';
+        HERE
+    }
 
     # get place index of first digit
     my $n = floor $log_b'x;
@@ -696,11 +766,12 @@ sub _from-dec-to-b37-b62(UInt $x'dec ,
 
     # work through the $x'dec.chars places (????)
     # for now just handle integers (later, real, i.e., digits after a fraction point)
-    for $n...0 -> $i { # <= Wolfram text is misleading here
+    for $n...0 -> $i { # <= Wolfram text is misleading here???
 	my $b'i  = $base-o ** $i;
-	@a[$i]   = floor (@r[$i] / $b'i);
+        my $fl = floor (@r[$i] / $b'i);
+	@a[$i]   = $fl < 0 ?? 0 !! $fl;
 
-        say "  i = $i; a = '@a[$i]'; r = '@r[$i]'" if $DEBUG;
+        note "  i = $i; a = '@a[$i]'; r = '@r[$i]'" if $DEBUG;
 
         # calc r for next iteration
 	@r[$i-1] = @r[$i] - @a[$i] * $b'i if $i > 0;
@@ -716,7 +787,97 @@ sub _from-dec-to-b37-b62(UInt $x'dec ,
 
     # trim leading zeroes
     $x'b ~~ s/^ 0+ /0/;
-    $x'b ~~ s:i/^ 0 (<[0..9a..z]>) /$0/;
+    #$x'b ~~ s:i/^ 0 (<[0..9a..z]>) /$0/;
+    $x'b ~~ s:i/^ 0 (\S+) /$0/;
 
     return $x'b;
-} # _from-dec-to-b37-b62
+} # _from-dec-to-b37-b91
+
+=finish
+
+# was _to-dec-from-b37-b91
+# Extends routine 'parse-base' to base 91 for unsigned integers.
+# Converts a string with a base (radix) of $base to its Numeric equivalent.
+sub str2num(Str:D $num is copy,
+            UInt $base where 2..91
+            --> Numeric) is export(:str2num) {
+
+    if $base < 37 {
+        $num .= uc;
+    }
+    # reverse the digits of the input number
+    my @num'r = $num.comb.reverse;
+    my $place = $num.chars;
+
+    my UInt $dec = 0;
+    for @num'r -> $digit {
+	--$place; # first place is num chars - 1
+	# need to convert the digit to dec first
+	my $digit-val = %digit2dec{$digit};
+	my $val = $digit-val * $base ** $place;
+	$dec += $val;
+    }
+
+    if $DEBUG {
+        note qq:to/HERE/;
+        DEBUG: sub _to_dec_from_baseN
+               input \$num      = '{$num}'
+               input \$base     = '$base';
+               calculated \$dec = '$dec';
+        HERE
+    }
+    $dec;
+} # str2num
+
+# was _from-dec-to-b37-b91
+# Extends method 'base' to base 91 for unsigned integers.
+# Converts an unsigned integer to a string using base $base.
+sub num2str($num,
+            UInt $base where 2..91
+            --> Str:D) is export(:num2str) {
+    # my $log_b'x = log $x'dec / log $base-o;
+    my $numerator   = log $num;
+    my $denominator = log $base;
+    my $log_b'x = $numerator / $denominator;
+    if $DEBUG {
+        note qq:to/HERE/;
+        DEBUG: sub num2str
+               input  \$num  = '{$num}'
+               output \$base = '$base';
+               calculated ln \$num  = '$numerator';
+               calculated ln \$base = '$denominator';
+               calculated \$log_b'x = '{$log_b'x}';
+        HERE
+    }
+
+    # get place index of first digit
+    my $n = floor $log_b'x;
+
+    # now the algorithm
+
+    # work through the $x'dec.chars places (????)
+    # for now just handle integers (later, real, i.e., digits after a fraction point)
+    my $x'b = '';
+    my $ri = $num;
+    for $n...0 -> $i {
+        my $b'i = $base ** $i;
+        my $ai = floor($ri / $b'i);
+        note "  i = $i; a = '$ai'; r = '$ri'" if $DEBUG;
+        $x'b ~= @dec2digit[$ai];
+
+        # calc r for next iteration
+	$ri = $ri - $ai * $b'i;
+    }
+    return $x'b;
+
+    # trim leading zeroes
+    $x'b ~~ s/^ 0+ /0/;
+    #$x'b ~~ s:i/^ 0 (<[0..9a..z]>) /$0/;
+    $x'b ~~ s:i/^ 0 (\S+) /$0/;
+
+    return $x'b;
+} # num2str
+
+sub frac($num) is export(:frac) {
+}
+

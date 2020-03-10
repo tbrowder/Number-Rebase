@@ -2,7 +2,7 @@
 
 use lib <../lib>;
 
-use Number::More :ALL;
+use Number::Rebase :ALL;
 
 # a test set of numbers and bases
 my $nums    = 100; # nums to choose

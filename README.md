@@ -9,6 +9,8 @@
     my $hex = bin2hex $bin;
     say $hex; # OUTPUT: 'CB'
 
+    my $a = Number::Rebase::number.new: $num, :$base;
+    $a 
 ## The Number::Rebase module
 
 This module provides some convenience functions to convert unsigned

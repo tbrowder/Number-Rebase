@@ -18,3 +18,5 @@ allow user-defined digit sets
 
 add a Number class with defined operators +, -, div, mod, /, %, **, *
 
+redo base91 alphabet to put decimal (radix) point char in last place
+  in order to allow fractional representation for bases 2-90

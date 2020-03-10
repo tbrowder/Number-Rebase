@@ -9,7 +9,7 @@ plan 4;
 my $hex = "ffffffffffffffffffffffffffffffff";
 is $hex.chars, 32;
 lives-ok {
-	rebase $hex, 32, 62, 22;
+	rebase $hex, 16, 62, 22;
 }
 
 my $uuid = UUID.new.Str;
