@@ -23,7 +23,7 @@ submethod TWEAK {
         }
         else {
             $!integer  = $!num.truncate;
-            $!fraction = frac $!num;
+#            $!fraction = frac $!num;
         }
     }
     elsif $!base {

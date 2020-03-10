@@ -12,7 +12,8 @@
         "bugtracker" : "https://github.com/tbrowder/Number-Rebase-Raku/issues"
     },
     "provides"    : {
-        "Number::More" : "lib/Number/Rebase.pm6"
+        "Number::Rebase" : "lib/Number/Rebase.rakumod"
+        "Number::Rebase::number" : "lib/Number/Rebase/number.rakumod"
     },
     "test-depends"     : [
 	"LibUUID",
