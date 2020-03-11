@@ -3,7 +3,8 @@
 my $debug = @*ARGS ?? 1 !! 0;
 
 my @n = 1.2, 3.45678e2, .012, 1.0, 0xa, 0o10, 0b10, 45,
-        '1.2', '3.45678e2', '.012', '1.0', '0xa', '0o10', '0b10', '45';
+        '1.2', '3.45678e2', '.012', '1.0', '0xa', '0o10', '0b10', '45',
+        'abc', 'xyz';
 
 for @n {
     my $typ = $_.^name;
@@ -48,18 +49,28 @@ sub frac($n) {
     # If the input is of a higher base than ?? it cannot
     # have a '.' as a radix point, otherwise it can only
     # have one '.'.
-    my $is-str = 0;
+    my $is-str  = 0;
+    my $is-allo = 0;
     if $n.^name eq 'Str' {
         ++$is-str;
+        # check to see if it's an allomorph
+        my $x = <<$n>>;
+        my $typ = $x.^name;
+        ++$is-allo if $typ ~~ /Int|Rat|Num/;
         # a crude check
         my $nc = 0;
         for $n.comb {
             ++$nc if $_ eq '.';
         } 
+        if !$is-allo {
+            # need to determine if
+            note "WARNING: $n is not an allomorph ($typ)" if 1 || $debug;
+            note "Skipping for now until proper handling is implemented for non-allomorph strings as numbers";
+            next;
+        }
         note "WARNING: Number '$n' contains $nc radix chars ('.')" if $nc > 1;
     }
 
-    # if it's a string, convert to a number
     my $num = $n.Num;
     my $f = $num.split('.')[1]; 
     my $i = $num.truncate;
