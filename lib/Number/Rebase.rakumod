@@ -26,7 +26,7 @@ my token decimal is export(:token-decimal)         { ^ \d+ $ }              # ac
 # case to preserve output.
 my token hexadecimal is export(:token-hecadecimal) { :i ^ <[a..f\d]>+ $ }   # multiple chars
 
-# For general base functions 2..91
+# For general base specification functions 2..91
 my token all-bases is export(:token-all-bases)     { ^ <[2..9]> | <[1..8]><[0..9]> | 9 <[01]>   $ }
 
 # base 2 is binary
@@ -878,6 +878,7 @@ sub num2str($num,
     return $x'b;
 } # num2str
 
+# add sub 'frac' and multi sub 'parts' here
 sub frac($num) is export(:frac) {
 }
 
