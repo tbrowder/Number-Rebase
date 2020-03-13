@@ -13,7 +13,7 @@ my @n = 1.2, 3.45678e2, .012, 1.0, 0xa, 0o10, 0b10, 45,
 for @n {
     my $typ = $_.^name;
 
-    my $f = frac $_;
+    my $f = frac $_, :$debug;
     $f = 'undef' if !$f.defined;
     say "$_, $f";
     next;
