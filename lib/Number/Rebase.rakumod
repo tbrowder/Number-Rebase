@@ -914,7 +914,8 @@ sub frac($n, :$base = 0, :$debug) is export(:frac) {
 
 # was _to-dec-from-b37-b91
 # Extends routine 'parse-base' to base 91 for unsigned integers.
-# Converts a string with a base (radix) of $base to its Numeric equivalent.
+# Converts a string with a base (radix) of $base to its Numeric
+# (base 10) equivalent.
 sub str2num(Str:D $num is copy,
             UInt $base where 2..91
             --> Numeric) is export(:str2num) {
@@ -948,8 +949,8 @@ sub str2num(Str:D $num is copy,
 
 # was _from-dec-to-b37-b91
 # Extends method 'base' to base 91 for unsigned integers.
-# Converts an unsigned integer to a string using base $base.
-sub num2str($num,
+# Converts an unsigned integer (base 10) to a string using base $base.
+sub num2str($num, # decimal integer
             UInt $base where 2..91
             --> Str:D) is export(:num2str) {
     # my $log_b'x = log $x'dec / log $base-o;

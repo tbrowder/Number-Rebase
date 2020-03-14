@@ -1,10 +1,11 @@
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 
 use lib <../lib>;
 
-use Number::Rebase :ALL;
+use Number::Rebase :dec2digit, :base, :digit2dec; # :ALL;
 
 my $debug = 0;
+my $DEBUG = 0;
 
 say "======================================";
 my $hex = "ffffffffffffffffffffffffffffffff";
