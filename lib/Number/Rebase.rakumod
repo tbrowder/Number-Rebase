@@ -827,24 +827,24 @@ class NumRebase is export {
         }
     }
 
-} # class Number::Rebase::number
+} # class NumRebase
 
-# subs
+# exportable subs
 
-multi parts($n, :$debug --> List) is export {
+multi parts($n, :$debug --> List) is export(:parts) {
     # puts $n's parts in $int and $frac
     my $int = $n.truncate;
     my $frac = frac $n;
     return $int, $frac;
 } # end multi parts
 
-multi parts($n, $int is rw, $frac is rw, :$debug) is export {
+multi parts($n, $int is rw, $frac is rw, :$debug) is export(:parts) {
     # puts $n's parts in $int and $frac
     $int = $n.truncate;
     $frac = frac $n;
 } # end multi parts
 
-sub frac($n, :$base = 0, :$debug) is export {
+sub frac($n, :$base = 0, :$debug) is export(:frac) {
     # Note: Even though an arg may have a '.0' it will
     # be treated as an undefined value for the fractional
     # part.
@@ -994,7 +994,3 @@ sub num2str($num,
 
     return $x'b;
 } # num2str
-
-# add sub 'frac' and multi sub 'parts' here
-sub frac($num) is export(:frac) {
-}
