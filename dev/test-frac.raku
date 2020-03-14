@@ -1,8 +1,7 @@
 #!/usr/bin/env raku
 
 use lib <../lib>;
-use Number::Rebase;
-#use Number::Rebase::number;
+use Number::Rebase :frac, :parts;
 
 my $debug = @*ARGS ?? 1 !! 0;
 

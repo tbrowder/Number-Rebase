@@ -1,8 +1,8 @@
 #!/usr/bin/env raku
 
 use lib <../lib>;
-#use Number::Rebase::number;
-use Number::Rebase :DEFAULT;
+use Number::Rebase :DEFAULT, :frac;
+#use Number::Rebase :DEFAULT;
 
 =begin comment
 my $a1 = Number::Rebase::number.new: 0xa; # integer value 10
