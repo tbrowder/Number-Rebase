@@ -5,7 +5,7 @@ use Number::Rebase :ALL;
 
 #plan 92; # 2-15, 17-91
 #plan 91; # 2-15, 17-63, 65-91
-plan 1;
+plan 3;
 
 # a UInt as input
 my $hexstr = "ffffffffffffffffffffffffffffffff";
