@@ -910,7 +910,7 @@ sub frac($n, :$base = 0, :$debug) is export(:frac) {
     $f;
 } # end sub frac
 
-=finish
+#=finish
 
 # was _to-dec-from-b37-b91
 # Extends routine 'parse-base' to base 91 for unsigned integers.
