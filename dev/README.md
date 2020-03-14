@@ -3,7 +3,7 @@ conversions from 37 through 91.
 
 Explicit results from website <http://www.numbertobase.com> were put
 into file `base-conversions.dat` which was then transformed by file
-`convert-examples.p6` into test file `060-auto-transform-checks.t`
+`convert-examples.raku` into test file `060-auto-transform-checks.t`
 which was then moved into the test directory `../t`.
 
 Note that the website uses the alphabet "0..9 a..z A..Z" as opposed to
