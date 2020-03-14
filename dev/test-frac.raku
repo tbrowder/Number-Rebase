@@ -2,7 +2,7 @@
 
 use lib <../lib>;
 use Number::Rebase;
-use Number::Rebase::number;
+#use Number::Rebase::number;
 
 my $debug = @*ARGS ?? 1 !! 0;
 
