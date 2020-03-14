@@ -53,6 +53,9 @@ say "14.3 in base 3 : '$ans1'.'$ans2'";
 
 exit;
 
+# below is a series of conversion tests just to exercise 
+# the base conversion range
+
 # a test set of numbers and bases
 my $nums    = 101; # nums to choose
 my $ndigits = 91;   # num digits per number
@@ -91,11 +94,13 @@ for 1..$nums -> $i {
 
 # was _to-dec-from-b37-b91
 # Extends routine 'parse-base' to base 91 for unsigned integers.
-# Converts a string with a base (radix) of $base to its Numeric equivalent.
+# Converts a string with a base (radix) of $base to its Numeric 
+# (decimal) equivalent.
 sub str2num(Str:D $num is copy,
             UInt $base where 2..91
             --> Numeric) is export(:str2num) {
 
+    # adjust for Raku's convention
     if $base < 37 {
         $num .= uc;
     }
