@@ -4,6 +4,14 @@ use lib <../lib>;
 
 use Number::Rebase :ALL;
 
+{
+my $n = '12345';
+my $o = _to-dec-from-b37-b62($n, 10);
+say "in: $n";
+say "out: $o";
+exit;
+}
+
 # a test set of numbers and bases
 my $nums    = 100; # nums to choose
 my $ndigits = 5;   # num digits per number
@@ -104,6 +112,7 @@ bunch more examples and they should get easier.
     my $dec = 0;
     for @num'r -> $digit {
 	--$place; # first place is num chars - 1
+        die "FATAL: \$place is negative!" if $place < 0;
 	# need to convert the digit to dec first
 	my $digit-val = %digit2dec{$digit};
 	my $val = $digit-val * $bi ** $place;

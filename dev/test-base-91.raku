@@ -4,6 +4,14 @@ use lib <../lib>;
 
 use Number::Rebase :dec2digit, :base, :digit2dec; # :ALL;
 
+{
+my $n = '12345';
+my $o = str2num($n, 10);
+say "in: $n";
+say "out: $o";
+exit;
+}
+
 my $debug = 0;
 my $DEBUG = 0;
 
@@ -111,6 +119,7 @@ sub str2num(Str:D $num is copy,
     my UInt $dec = 0;
     for @num'r -> $digit {
 	# need to convert the digit to dec first
+	die "FATAL: \$place is negative!" if $place < 0;
 	my $digit-val = %digit2dec{$digit};
 	my $val = $digit-val * $base ** $place;
 	$dec += $val;
