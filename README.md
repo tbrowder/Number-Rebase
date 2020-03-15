@@ -9,14 +9,12 @@
     my $hex = bin2hex $bin;
     say $hex; # OUTPUT: 'CB'
 
-    my $a = Number::Rebase::number.new: $num, :$base;
-    $a 
 ## The Number::Rebase module
 
 This module provides some convenience functions to convert unsigned
 integers between different, commonly used number bases: decimal,
 hexadecimal, octal, and binary. There is also a function to convert
-between bases 2 through 62.
+between bases 2 through 91.
 
 Note that bases greater than 36 will use a set of digits consisting of
 a case-sensitive set of ASCII characters in an array indexed from
