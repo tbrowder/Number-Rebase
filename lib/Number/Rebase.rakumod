@@ -677,7 +677,7 @@ bunch more examples and they should get easier.
     } # end of in-line comment
 
     # reverse the digits of the input number
-    my @num'r = $num.comb.reverse;
+    my @num'r = $num.comb; # .reverse;
     my $place = $num.chars;
 
     my $dec = 0;
@@ -948,6 +948,21 @@ sub str2num(Str:D $num is copy,
     $dec;
 } # str2num
 
+
+# this version looks excellent for the integer part!
+multi sub num2str(UInt:D $dec, UInt:D $base --> Str) is export(:num2str) {
+    my $int = '';
+    my $rem = $dec;
+    loop {
+        my $di  = $rem mod $base; # $di is an index into the base's alphabet
+        $rem = $rem div $base;
+        $int = @dec2digit[$di] ~ $int;
+        last if !$rem;
+    }
+    $int;
+}
+
+=begin comment
 # was _from-dec-to-b37-b91
 # Extends method 'base' to base 91 for unsigned integers.
 # Converts an unsigned integer (base 10) to a string using base $base.
@@ -996,3 +1011,4 @@ sub num2str($num, # decimal integer
 
     return $x'b;
 } # num2str
+=end comment

@@ -115,8 +115,8 @@ sub str2num(Str:D $num is copy,
     if $base < 37 {
         $num .= uc;
     }
-    # reverse the digits of the input number???
-    my @num'r = $num.comb; #.reverse;
+
+    my @num'r = $num.comb;
     my $place = $num.chars - 1;
 
     my UInt $dec = 0;
