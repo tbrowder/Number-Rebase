@@ -61,7 +61,7 @@ say "14.3 in base 3 : '$ans1'.'$ans2'";
 
 exit;
 
-# below is a series of conversion tests just to exercise 
+# below is a series of conversion tests just to exercise
 # the base conversion range
 
 # a test set of numbers and bases
@@ -99,10 +99,13 @@ for 1..$nums -> $i {
     }
 }
 
+#===============================================================================
+# SUBROUTINES
+#===============================================================================
 
 # was _to-dec-from-b37-b91
 # Extends routine 'parse-base' to base 91 for unsigned integers.
-# Converts a string with a base (radix) of $base to its Numeric 
+# Converts a string with a base (radix) of $base to its Numeric
 # (decimal) equivalent.
 sub str2num(Str:D $num is copy,
             UInt $base where 2..91

@@ -920,6 +920,7 @@ sub str2num(Str:D $num is copy,
             UInt $base where 2..91
             --> Numeric) is export(:str2num) {
 
+    # adjust for Raku's convention
     if $base < 37 {
         $num .= uc;
     }
