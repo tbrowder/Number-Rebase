@@ -12,8 +12,8 @@ EARLYFAIL := PERL6_TEST_DIE_ON_FAIL=0
 default: test
 
 TESTS     := t/*.t
-BADTESTS  := bad-tests/*.t
-GOODTESTS := good-tests/*.t
+BADTESTS  := bad/*.t
+GOODTESTS := good/*.t
 
 # the original test suite (i.e., 'make test')
 test:

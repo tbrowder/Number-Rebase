@@ -5,7 +5,8 @@ use Number::Rebase :ALL;
 
 my $debug = 0;
 
-plan 99;
+#plan 99;
+plan 96;
 
 # a UInt as input
 my $hex  = "ffffffffffffffffffffffffffffffff";
@@ -14,7 +15,8 @@ my $hexn = 0xffffffffffffffffffffffffffffffff;
 #is $hex.chars, 32;
 
 my ($val-out, $val-in, $bo, $bi);
-for $hex, $hexn -> $hex {
+#for $hex, $hexn -> $hex {
+for $hex -> $hex {
 $val-in  = $hex;
 $bi = 16;
 $bo = 10;
