@@ -3,22 +3,24 @@ use Test;
 use LibUUID;
 use Number::Rebase :ALL;
 
-#plan 92; # 2-15, 17-91
-#plan 91; # 2-15, 17-63, 65-91
-plan 3;
+my $debug = 0;
+
+plan 99;
 
 # a UInt as input
-my $hexstr = "ffffffffffffffffffffffffffffffff";
+my $hex  = "ffffffffffffffffffffffffffffffff";
+my $hexn = 0xffffffffffffffffffffffffffffffff;
 # note default alphabet for base 36 or less in Raku is upper case
 #is $hex.chars, 32;
 
 my ($val-out, $val-in, $bo, $bi);
-$val-in  = $hexstr;
+for $hex, $hexn -> $hex {
+$val-in  = $hex;
 $bi = 16;
 $bo = 10;
 lives-ok {
     $val-out = str2num $val-in, $bi;
-    note "DEBUG: val-in  = '$val-in'; base $bi";
+    note "DEBUG: val-in  = '$val-in'; base $bi" if $debug;
     note "       val-out = '$val-out'; base $bo'";
 }
 
@@ -26,35 +28,36 @@ $val-in = $val-out;
 ($bi, $bo) = ($bo, $bi);
 lives-ok {
     $val-out = num2str $val-in, 16;
-    note "DEBUG: val-in  = '$val-in'; base 10";
+    note "DEBUG: val-in  = '$val-in'; base 10" if $debug;
     note "       val-out = '$val-out'; base 16'";
 }
 
-is $val-out, $hexstr.uc;
+is $val-out, $hex.uc;
+}
 
-=finish
+#=finish
 
 lives-ok {
     my $val = rebase $hex, 16, 65;
-    note "DEBUG: val = '$val'";
+    note "DEBUG: val = '$val'" if $debug;
 }
 lives-ok {
     my $val = rebase $hex, 16, 91;
-    note "DEBUG: val = '$val'";
+    note "DEBUG: val = '$val'" if $debug;
 }
 
-=finish
+#=finish
 
-=begin comment
+#=begin comment
 # base 64 is causing trouble
 # char is '#'
 # decimal value is 63
 
 lives-ok {
     my $val = rebase $hex, 16, 64;
-    note "DEBUG: val = '$val'";
+    note "DEBUG: val = '$val'" if $debug;
 }
-=end comment
+#=end comment
 #done-testing
 
 #=finish
@@ -62,7 +65,7 @@ lives-ok {
 for 2..15 -> $base-o {
     lives-ok {
 	my $x = rebase $hex, 16, $base-o;
-        note "DEBUG: base-o = $base-o; x = '$x'";
+        note "DEBUG: base-o = $base-o; x = '$x'" if $debug;
 	rebase $hex, 16, $base-o;
     }
 }
@@ -70,14 +73,14 @@ for 2..15 -> $base-o {
 for 17..63 -> $base-o {
     lives-ok {
 	my $x = rebase $hex, 16, $base-o;
-        note "DEBUG: base-o = $base-o; x = '$x'";
+        note "DEBUG: base-o = $base-o; x = '$x'" if $debug;
     }
 }
 
 for 65..91 -> $base-o {
     lives-ok {
 	my $x = rebase $hex, 16, $base-o;
-        note "DEBUG: base-o = $base-o; x = '$x'";
+        note "DEBUG: base-o = $base-o; x = '$x'" if $debug;
     }
 }
 

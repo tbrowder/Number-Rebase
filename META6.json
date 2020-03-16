@@ -1,6 +1,6 @@
 {
     "perl"        : "6.*",
-    "name"        : "Number::More",
+    "name"        : "Number::Rebase",
     "version"     : "1.0.0",
     "description" : "Provides number base transform functions",
     "auth"        : "github:tbrowder",
