@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/tbrowder/Number-Rebase-Raku.svg?branch=master)](https://travis-ci.com/tbrowder/Number-Rebase-Raku)
+[![Build Status](https://travis-ci.org/tbrowder/Number-Rebase-Raku.svg?branch=master)](https://travis-ci.org/tbrowder/Number-Rebase-Raku)
 
 # Number::Rebase
 
