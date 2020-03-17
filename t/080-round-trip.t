@@ -6,38 +6,39 @@ use Number::Rebase :ALL;
 my $debug = 0;
 
 #plan 99;
-plan 96;
+#plan 96;
+plan 6;
 
 # a UInt as input
-my $hex  = "ffffffffffffffffffffffffffffffff";
+my $hex  =  "ffffffffffffffffffffffffffffffff";
 my $hexn = 0xffffffffffffffffffffffffffffffff;
 # note default alphabet for base 36 or less in Raku is upper case
 #is $hex.chars, 32;
 
 my ($val-out, $val-in, $bo, $bi);
-#for $hex, $hexn -> $hex {
-for $hex -> $hex {
-$val-in  = $hex;
+for $hex, $hexn -> $h {
+#for $hex -> $h {
+$val-in  = <<$h>>;
 $bi = 16;
 $bo = 10;
 lives-ok {
     $val-out = str2num $val-in, $bi;
-    note "DEBUG: val-in  = '$val-in'; base $bi" if $debug;
+    note "DEBUG: val-in  = '$val-in'; base $bi"; # if $debug;
     note "       val-out = '$val-out'; base $bo'";
-}
+}, "lives ok: str2num";
 
 $val-in = $val-out;
 ($bi, $bo) = ($bo, $bi);
 lives-ok {
     $val-out = num2str $val-in, 16;
-    note "DEBUG: val-in  = '$val-in'; base 10" if $debug;
+    note "DEBUG: val-in  = '$val-in'; base 10"; # if $debug;
     note "       val-out = '$val-out'; base 16'";
+}, "lives ok: num2str";
+
+is $val-out, $hex.uc, "is val out hex?";
 }
 
-is $val-out, $hex.uc;
-}
-
-#=finish
+=finish
 
 lives-ok {
     my $val = rebase $hex, 16, 65;

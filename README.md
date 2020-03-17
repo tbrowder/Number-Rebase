@@ -5,7 +5,8 @@
 ## Synopsis
 
     use Number::Rebase :ALL;
-    my $bin = '11001011';   # do not enter any prefix
+    # enter a string for rebasing
+    my $bin = '11001011';
     my $hex = bin2hex $bin;
     say $hex; # OUTPUT: 'CB'
 
@@ -42,12 +43,12 @@ convert the decimal number to the final desired base.  In addition,
 adding prefixes, changing to lower-case where appropriate, and
 increasing lengths will involve more processing.
 
-The following illustrates the process using Perl 6 routines for the
+The following illustrates the process using Raku routines for the
 example above:
 
     my $bin = '11001011';
     my $dec = parse-base $bin, 2;
-    my $hex = $dec.base : 16;
+    my $hex = $dec.base: 16;
     say $hex; # OUTPUT 'CB'
 
 The default for each provided function is to take a string (valid

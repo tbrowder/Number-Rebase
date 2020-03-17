@@ -916,9 +916,15 @@ sub frac($n, :$base = 0, :$debug) is export(:frac) {
 # Extends routine 'parse-base' to base 91 for unsigned integers.
 # Converts a string with a base (radix) of $base to its Numeric
 # (base 10) equivalent.
-sub str2num(Str:D $num is copy,
+
+#sub str2num(Str:D $num is copy,
+sub str2num($num is copy,
             UInt $base where 2..91
             --> Numeric) is export(:str2num) {
+
+    if $num.^name ~~ /Num|Int|Rat/ {
+        return $num;
+    }
 
     # adjust for Raku's convention
     if $base < 37 {
@@ -939,7 +945,7 @@ sub str2num(Str:D $num is copy,
 
     if $DEBUG {
         note qq:to/HERE/;
-        DEBUG: sub _to_dec_from_baseN
+        DEBUG: sub str2num
                input \$num      = '{$num}'
                input \$base     = '$base';
                calculated \$dec = '$dec';
