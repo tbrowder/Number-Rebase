@@ -1,0 +1,6 @@
+{{$NEXT}}
+  - Convert to use App::Mi6
+  - Move to Zef Raku module repo
+  - Use separate workflow tests for each OS
+  - Replaces deprecated module Number::More
+  - Initial release
