@@ -1,31 +1,35 @@
 {
-    "perl"        : "6.*",
-    "name"        : "Number::Rebase",
-    "version"     : "1.0.0",
-    "description" : "Provides number base transform functions",
-    "auth"        : "github:tbrowder",
-    "author"      : "github:tbrowder",
-    "authors"     : [ "Tom Browder <tom.browder@gmail.com>" ],
-    "license"     : "Artistic-2.0",
-    "source-url"  : "https://github.com/tbrowder/Number-Rebase-Raku.git",
-    "support"     : {
-        "bugtracker" : "https://github.com/tbrowder/Number-Rebase-Raku/issues"
-    },
-    "provides"    : {
-        "Number::Rebase" : "lib/Number/Rebase.rakumod"
-    },
-    "test-depends"     : [
-	"LibUUID",
-	"Test::META"
-    ],
-    "depends" : [
-    ],
-    "resources" : [
-    ],
-    "tags" : [
-	"number", 
-	"base", 
-	"rebase", 
-	"base transform"
-    ]
+  "auth": "github:tbrowder",
+  "author": "github:tbrowder",
+  "authors": [
+    "Tom Browder <tom.browder@gmail.com>"
+  ],
+  "build-depends": [
+  ],
+  "depends": [
+  ],
+  "description": "Provides number base transform functions",
+  "license": "Artistic-2.0",
+  "name": "Number::Rebase",
+  "perl": "6.*",
+  "provides": {
+    "Number::Rebase": "lib/Number/Rebase.rakumod"
+  },
+  "resources": [
+  ],
+  "source-url": "https://github.com/tbrowder/Number-Rebase-Raku.git",
+  "support": {
+    "bugtracker": "https://github.com/tbrowder/Number-Rebase-Raku/issues"
+  },
+  "tags": [
+    "number",
+    "base",
+    "rebase",
+    "base transform"
+  ],
+  "test-depends": [
+    "LibUUID",
+    "Test::META"
+  ],
+  "version": "1.0.0"
 }
