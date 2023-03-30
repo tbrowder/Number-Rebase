@@ -1,17 +1,16 @@
 =begin pod
 
-=head Subroutines Exported by the C<:ALL> Tag
+=head1 Subroutines Exported by the C<:ALL> Tag
 
 =begin table :caption<Contents>
-
 Col 1 | Col 2 | Col 3 
---- | --- | --- |
+--- | --- | --- 
 bin2dec | bin2hex | bin2oct 
 dec2bin | dec2hex | dec2oct
 hex2bin | hex2dec | hex2oct
 oct2bin | oct2dec | oct2hex
 rebase |  |  
-
+=end table
 
 =head3 sub bin2dec
 =begin verbatim
@@ -24,6 +23,8 @@ sub bin2dec(Str:D $bin where &binary,
             UInt $len = 0
             --> Cool) is export(:bin2dec) {#...}
 =end code
+
+=end pod
 
 =finish
 
