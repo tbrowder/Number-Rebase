@@ -1,12 +1,13 @@
 {
-  "auth": "github:tbrowder",
-  "author": "github:tbrowder",
+  "auth": "zef:tbrowder",
+  "author": "zef:tbrowder",
   "authors": [
-    "Tom Browder <tom.browder@gmail.com>"
+    "Tom Browder <tbrowder@acm.org>"
   ],
   "build-depends": [
   ],
   "depends": [
+    "LibUUID"
   ],
   "description": "Provides number base transform functions",
   "license": "Artistic-2.0",
@@ -28,7 +29,6 @@
     "base transform"
   ],
   "test-depends": [
-    "LibUUID",
     "Test::META"
   ],
   "version": "1.0.0"
