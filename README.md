@@ -14,5 +14,12 @@ In order to use the period as the radix point for fractions we swap the period a
 
     ! # $ % & ( ) * + , " / : ; < = > ? @ [ ] ^ _ ` { | } ~ . 
 
-Then, for bases 2 through 90 the radix point is the period. For base 91 we provide a separate routine to return the integer and fractional parts separately. Standard digit set for bases 2 through 91 (char 0 through 91). The array of digits is indexed by their decimal value. Standard digit set for bases 2 through 91 (char 0 through 90). The hash is comprised of digit keys and their decimal value.
+Then, for bases 2 through 90, the radix point is the period. For base 91 we 
+provide a separate routine to return the integer and fractional parts separately. 
+Standard digit set for bases 2 through 91 (char 0 through 91). The array of 
+digits is indexed by their decimal value. 
 
+Following is standard digit set for bases 2 through 91 (char 0 through 90). 
+The hash is comprised of digit keys and their decimal value.
+
+      ... hash ...
