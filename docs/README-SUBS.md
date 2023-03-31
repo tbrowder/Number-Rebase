@@ -26,7 +26,7 @@ Subroutines Exported by the `:ALL` Tag
                 UInt $len = 0,
                 Bool :$prefix = False,
                 Bool :$LC = False
-	        --> Str) is export(:bin2hex) {...}
+                --> Str) is export(:bin2hex) {...}
 
 ### sub bin2oct
 
@@ -58,7 +58,7 @@ Subroutines Exported by the `:ALL` Tag
                 UInt $len = 0,
                 Bool :$prefix = False,
                 Bool :$LC = False
-	        --> Str) is export(:dec2hex) {...}
+                --> Str) is export(:dec2hex) {...}
 
 ### sub dec2oct
 
