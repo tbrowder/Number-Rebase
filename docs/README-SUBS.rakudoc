@@ -31,7 +31,7 @@ sub bin2hex(Str:D $bin where &binary,
             UInt $len = 0,
             Bool :$prefix = False,
             Bool :$LC = False
-	    --> Str) is export(:bin2hex) {...}
+            --> Str) is export(:bin2hex) {...}
 =end code
 
 =head3 sub bin2oct
@@ -66,7 +66,7 @@ sub dec2hex($dec where &decimal,
             UInt $len = 0,
             Bool :$prefix = False,
             Bool :$LC = False
-	    --> Str) is export(:dec2hex) {...}
+            --> Str) is export(:dec2hex) {...}
 =end code
 
 =head3 sub dec2oct
