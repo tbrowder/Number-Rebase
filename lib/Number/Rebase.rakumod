@@ -10,7 +10,6 @@ BEGIN {
 	$DEBUG = False;
     }
 }
-
 $DEBUG = 0;
 
 # Export a var for users to set length behavior
@@ -21,6 +20,7 @@ my token length-action { ^ :i warn|fail $ }
 my token binary is export(:token-binary)           { ^ <[01]>+ $ }
 my token octal is export(:token-octal)             { ^ <[0..7]>+ $ }
 my token decimal is export(:token-decimal)         { ^ \d+ $ }              # actually an int
+
 # Note default Raku hex input handling is mixed case and upper-case for output.
 # This module handles either input but hex input MUST be either all upper or all lower
 # case to preserve output.
@@ -36,9 +36,11 @@ my token base4 is export(:token-base4)             { ^ <[0..3]>+ $ }
 my token base5 is export(:token-base5)             { ^ <[0..4]>+ $ }
 my token base6 is export(:token-base6)             { ^ <[0..5]>+ $ }
 my token base7 is export(:token-base7)             { ^ <[0..6]>+ $ }
+
 # base 8 is octal
 my token base8 is export(:token-base8)             { ^ <[0..7]>+ $ }
 my token base9 is export(:token-base9)             { ^ <[0..8]>+ $ }
+
 # base 10 is decimal
 my token base10 is export(:token-base10)           { ^ \d+ $ }              # actually an int
 my token base11 is export(:token-base11)           { :i ^ <[a\d]>+ $ }      # multiple chars
@@ -46,12 +48,12 @@ my token base12 is export(:token-base12)           { :i ^ <[ab\d]>+ $ }     # mu
 my token base13 is export(:token-base13)           { :i ^ <[abc\d]>+ $ }    # multiple chars
 my token base14 is export(:token-base14)           { :i ^ <[a..d\d]>+ $ }   # multiple chars
 my token base15 is export(:token-base15)           { :i ^ <[a..e\d]>+ $ }   # multiple chars
+
 # base 16 is hexadecimal
 my token base16 is export(:token-base16)           { :i ^ <[a..f\d]>+ $ }   # multiple chars
 my token base17 is export(:token-base17)           { :i ^ <[a..g\d]>+ $ }   # multiple chars
 my token base18 is export(:token-base18)           { :i ^ <[a..h\d]>+ $ }   # multiple chars
 my token base19 is export(:token-base19)           { :i ^ <[a..i\d]>+ $ }   # multiple chars
-
 my token base20 is export(:token-base20)           { :i ^ <[a..j\d]>+ $ }   # multiple chars
 my token base21 is export(:token-base21)           { :i ^ <[a..k\d]>+ $ }   # multiple chars
 my token base22 is export(:token-base22)           { :i ^ <[a..l\d]>+ $ }   # multiple chars
@@ -114,8 +116,8 @@ my token base70 is export(:token-base70)           { ^ <[A..Za..z\d ! # $ % & ( 
 my token base71 is export(:token-base71)           { ^ <[A..Za..z\d ! # $ % & ( ) * + ]>+ $ }  # case-sensitive, multiple chars
 my token base72 is export(:token-base72)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , ]>+ $ }  # case-sensitive, multiple chars
 
-# at this point we swap the original positions of the period and the double quotation mark
-# in order to use the period as a radix point for bases 2..90
+# At this point we swap the original positions of the period and the double quotation mark
+# in order to use the period as a radix point for bases 2..90.
 my token base73 is export(:token-base73)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " ]>+ $ }  # case-sensitive, multiple chars
 my token base74 is export(:token-base74)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / ]>+ $ }  # case-sensitive, multiple chars
 my token base75 is export(:token-base75)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ]>+ $ }  # case-sensitive, multiple chars
@@ -134,6 +136,7 @@ my token base87 is export(:token-base87)           { ^ <[A..Za..z\d ! # $ % & ( 
 my token base88 is export(:token-base88)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ? @ [ \] ^ _ ` { | ]>+ $ }  # case-sensitive, multiple chars
 my token base89 is export(:token-base89)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ? @ [ \] ^ _ ` { | } ]>+ $ }  # case-sensitive, multiple chars
 my token base90 is export(:token-base90)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ? @ [ \] ^ _ ` { | } ~ ]>+ $ }  # case-sensitive, multiple chars
+
 # note base91 cannot have the period as a radix point (but we might could handle it
 # with a unicode char of some kind)
 my token base91 is export(:token-base91)           { ^ <[A..Za..z\d ! # $ % & ( ) * + , " / : ; < = > ? @ [ \] ^ _ ` { | } ~ .]>+ $ }  # case-sensitive, multiple chars
@@ -917,7 +920,6 @@ sub frac($n, :$base = 0, :$debug) is export(:frac) {
 # Converts a string with a base (radix) of $base to its Numeric
 # (base 10) equivalent.
 
-#sub str2num(Str:D $num is copy,
 sub str2num($num is copy,
             UInt $base where 2..91
             --> Numeric) is export(:str2num) {
