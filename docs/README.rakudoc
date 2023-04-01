@@ -1,7 +1,7 @@
-=head3 method base
+=head3 method rebase
 
 =begin code
-method base() returns Mu
+method rebase() returns Mu
 =end code
 
 The original extended character set (29 more chars) after base62 
