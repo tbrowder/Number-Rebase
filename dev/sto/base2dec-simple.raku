@@ -1,15 +1,14 @@
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 
-use lib <../lib>;
+use lib <../../lib>;
 
-use Number::More :ALL;
+use Number::Rebase :ALL;
 
 # a test set of numbers and bases
 my $nums    = 100; # nums to choose
 my $ndigits = 5;   # num digits per number
 
-my @b = 11..62; # set of allowable output bases
-
+my @b = 11..62; # set of allowable bases
 my @p = @b; # need an array to pick from since @b is used in a loop 
 
 my @dd = <0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 7 8 9>;
@@ -92,6 +91,7 @@ bunch more examples and they should get easier.
 
 #sub _from-dec-to-b37-b62(UInt $x'dec ,
 sub _from-dec-to-b37-b62($x'dec ,
+			 #UInt $base-o where { 36 < $base-o < 63 }
 			 UInt $base-o
 		         --> Str) is export(:_from-dec-to-b37-b62) {
     # see Wolfram's solution (article Base)
@@ -102,7 +102,6 @@ sub _from-dec-to-b37-b62($x'dec ,
 
     # get place index of first digit
     my $n = floor $log_b'x;
-    say "  log_b'x = $log_b'x;' n = '$n'"; 
 
     # now the algorithm
     # we need @r below to be a fixed array of size $n + 2
@@ -114,7 +113,7 @@ sub _from-dec-to-b37-b62($x'dec ,
     # work through the $x'dec.chars places (????)
     # for now just handle integers (later, real, i.e., digits after a fraction point)
     #for $n..0 -> $i {
-    for $n ... 0 -> $i { # <= Wolfram text is misleading here
+    for $n..0 -> $i { # <= Wolfram text is misleading here
 	my $b'i  = $base-o ** $i;
 	@a[$i]   = floor (@r[$i] / $b'i);
 
@@ -124,8 +123,7 @@ sub _from-dec-to-b37-b62($x'dec ,
 	@r[$i-1] = @r[$i] - @a[$i] * $b'i;
     }
 
-    return "dummy";
-
+    =begin pod
     # @a contains the index of the digits of the number in the new base
     my $x'b = '';
     for @a -> $di {
@@ -134,7 +132,9 @@ sub _from-dec-to-b37-b62($x'dec ,
     }
 
     return $x'b;
+    =end pod
 
+    return "dummy return";
 }
 
 sub rebase-b37-b62($x, $bi, $bo) {
