@@ -2,7 +2,7 @@
 
 =head1 NAME
 
-B<Number::Rebase> provides routines
+B<Number::Rebase> provides routines to manipulate numbers of differing bases
 
 =head1 SYNOPSIS
 
@@ -118,5 +118,15 @@ The hash is comprised of digit keys and their decimal value.
 =begin code
       ... hash ...
 =end code
+
+=head1 AUTHOR
+
+Tom Browder <tbrowder@acm.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+© 2025 Tom Browder
+
+This library is free software; you may redistribute it or modify it under the Artistic License 2.0.
 
 =end pod

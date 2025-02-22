@@ -3,7 +3,7 @@
 NAME
 ====
 
-**Number::Rebase** provides routines
+**Number::Rebase** provides routines to manipulate numbers of differing bases
 
 SYNOPSIS
 ========
@@ -65,4 +65,16 @@ Following is the standard digit set for bases 2 through 91 (char 0 through 90). 
 Following is the standard digit set for bases 2 through 91 (char 0 through 90). The hash is comprised of digit keys and their decimal value.
 
           ... hash ...
+
+AUTHOR
+======
+
+Tom Browder <tbrowder@acm.org>
+
+COPYRIGHT AND LICENSE
+=====================
+
+© 2025 Tom Browder
+
+This library is free software; you may redistribute it or modify it under the Artistic License 2.0.
 
