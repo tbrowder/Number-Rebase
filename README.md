@@ -17,11 +17,11 @@ DESCRIPTION
 
 This module provides some convenience functions to convert unsigned integers between different, commonly used number bases: decimal, hexadecimal, octal, and binary. There is also a function to convert between bases 2 through 91.
 
-Note that bases greater than 36 will use a set of digits consisting of a case-sensitive set of ASCII characters in an array indexed from 0..base-1, and the reverse mapping is in a hash. Both exported variables are shown in [NUMBERS](docs/NUMBERS.md).
+Note that bases greater than 36 will use a set of digits consisting of a case-sensitive set of ASCII characters in an array indexed from 0..base-1, and the reverse mapping is in a hash. Both exported variables are shown in [NUMBERS](./docs/NUMBERS.md).
 
 Also included in that document is more information on other exported variables, number systems (and references), and their use in this module.
 
-The current subroutines are described in detail in [SUBS](docs/SUBS.md) which shows a short description of each exported routine along along with its complete signature.
+The current subroutines are described in detail in [SUBS](./docs/SUBS.md) which shows a short description of each exported routine along along with its complete signature.
 
 The functions in this module are recommended for users who don't want to have to deal with the messy code involved with such transformations and who want an easy interface to get the various results they may need.
 
@@ -43,8 +43,6 @@ There is an optional parameter to define desired lengths of results (which will 
 The suffix overrides any requested prefix.
 
 The user can also set an environment variable to set the reponse to situations where the transformed length is greater than the requested length: (1) ignore and provide the required length (the default), (2) warn of the increased length but provide it, and (3) throw an exception and report the offending data.
-
-**Number::Rebase**
 
 ### method rebase
 
