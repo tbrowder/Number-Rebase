@@ -21,7 +21,7 @@ Note that bases greater than 36 will use a set of digits consisting of a case-se
 
 Also included in that document is more information on other exported variables, number systems (and references), and their use in this module.
 
-The current subroutines are described in detail in [SUBS](../blob/docs/SUBS.md) which shows a short description of each exported routine along along with its complete signature.
+The current subroutines are described in detail in [SUBS](../blob/master/docs/SUBS.md) which shows a short description of each exported routine along along with its complete signature.
 
 The functions in this module are recommended for users who don't want to have to deal with the messy code involved with such transformations and who want an easy interface to get the various results they may need.
 
