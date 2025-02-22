@@ -17,11 +17,11 @@ DESCRIPTION
 
 This module provides some convenience functions to convert unsigned integers between different, commonly used number bases: decimal, hexadecimal, octal, and binary. There is also a function to convert between bases 2 through 91.
 
-Note that bases greater than 36 will use a set of digits consisting of a case-sensitive set of ASCII characters in an array indexed from 0..base-1, and the reverse mapping is in a hash. Both exported variables are shown in [NUMBERS](docs/NUMBERS.MD).
+Note that bases greater than 36 will use a set of digits consisting of a case-sensitive set of ASCII characters in an array indexed from 0..base-1, and the reverse mapping is in a hash. Both exported variables are shown in [NUMBERS](docs/NUMBERS.md).
 
 Also included in that document is more information on other exported variables, number systems (and references), and their use in this module.
 
-The current subroutines are described in detail in [SUBS](docs/-SUBS.md) which shows a short description of each exported routine along along with its complete signature.
+The current subroutines are described in detail in [SUBS](docs/SUBS.md) which shows a short description of each exported routine along along with its complete signature.
 
 The functions in this module are recommended for users who don't want to have to deal with the messy code involved with such transformations and who want an easy interface to get the various results they may need.
 
@@ -29,10 +29,10 @@ As an example of the detail involved, any transformation from a non-decimal base
 
 The following illustrates the process using Raku routines for the example above:
 
-        my $bin = '11001011';
-        my $dec = parse-base $bin, 2;
-        my $hex = $dec.base : 16;
-        say $hex; # OUTPUT 'CB'
+    my $bin = '11001011';
+    my $dec = parse-base $bin, 2;
+    my $hex = $dec.base : 16;
+    say $hex; # OUTPUT 'CB'
 
 The default for each provided function is to take a string (valid decimals may be entered as numbers) representing a valid number in one base and transform it into the desired base with no leading zeroes or descriptive prefix (such as '0x', '0o', and '0b') to indicate the type of number. The default is also to use upper-case characters for the hexadecimal results and all bases greater than 10 and less than 37. Bases greater than 36 use a mixture of upper-case and lower-case characters.
 

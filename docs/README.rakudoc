@@ -20,14 +20,14 @@ between bases 2 through 91.
 Note that bases greater than 36 will use a set of digits consisting of
 a case-sensitive set of ASCII characters in an array indexed from
 0..base-1, and the reverse mapping is in a hash.  Both exported
-variables are shown in [NUMBERS](docs/NUMBERS.MD).
+variables are shown in [NUMBERS](docs/NUMBERS.md).
 
 Also included in that document is more information on other exported
 variables, number systems (and references), and their use in this
 module.
 
 The current subroutines are described in detail in
-[SUBS](docs/-SUBS.md)
+[SUBS](docs/SUBS.md)
 which shows a short description of each exported routine along along
 with its complete signature.
 
@@ -47,10 +47,10 @@ The following illustrates the process using Raku routines for the
 example above:
 
 =begin code
-    my $bin = '11001011';
-    my $dec = parse-base $bin, 2;
-    my $hex = $dec.base : 16;
-    say $hex; # OUTPUT 'CB'
+my $bin = '11001011';
+my $dec = parse-base $bin, 2;
+my $hex = $dec.base : 16;
+say $hex; # OUTPUT 'CB'
 =end code
 
 The default for each provided function is to take a string (valid
