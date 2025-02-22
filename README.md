@@ -17,7 +17,7 @@ DESCRIPTION
 
 This module provides some convenience functions to convert unsigned integers between different, commonly used number bases: decimal, hexadecimal, octal, and binary. There is also a function to convert between bases 2 through 91.
 
-Note that bases greater than 36 will use a set of digits consisting of a case-sensitive set of ASCII characters in an array indexed from 0..base-1, and the reverse mapping is in a hash. Both exported variables are shown in [NUMBERS](../docs/NUMBERS.md).
+Note that bases greater than 36 will use a set of digits consisting of a case-sensitive set of ASCII characters in an array indexed from 0..base-1, and the reverse mapping is in a hash. Both exported variables are shown in [NUMBERS](../blob/master/docs/NUMBERS.md).
 
 Also included in that document is more information on other exported variables, number systems (and references), and their use in this module.
 
