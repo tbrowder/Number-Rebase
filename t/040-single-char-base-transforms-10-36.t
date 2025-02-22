@@ -3,8 +3,6 @@ use Test;
 
 use Number::Rebase :ALL;
 
-plan 54;
-
 # testing single chars only
 my $prefix = True;
 my $LC     = True;
@@ -75,3 +73,6 @@ for 10..36 -> $dec {
     # default case
     is rebase($tnum-in, $bi, $bo), $tnum-out, $tnum-out;
 }
+
+done-testing;
+

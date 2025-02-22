@@ -1,13 +1,9 @@
 use Test;
 
-use LibUUID;
+use UUID::V4;
 use Number::Rebase :ALL;
 
 my $debug = 0;
-
-#plan 99;
-#plan 96;
-plan 6;
 
 # a UInt as input
 my $hex  =  "ffffffffffffffffffffffffffffffff";
@@ -38,8 +34,6 @@ lives-ok {
 is $val-out, $hex.uc, "is val out hex?";
 }
 
-=finish
-
 lives-ok {
     my $val = rebase $hex, 16, 65;
     note "DEBUG: val = '$val'" if $debug;
@@ -49,7 +43,6 @@ lives-ok {
     note "DEBUG: val = '$val'" if $debug;
 }
 
-#=finish
 
 #=begin comment
 # base 64 is causing trouble
@@ -61,9 +54,6 @@ lives-ok {
     note "DEBUG: val = '$val'" if $debug;
 }
 #=end comment
-#done-testing
-
-#=finish
 
 for 2..15 -> $base-o {
     lives-ok {
@@ -87,7 +77,7 @@ for 65..91 -> $base-o {
     }
 }
 
-my $uuid = UUID.new.Str;
+my $uuid = uuid-v4();
 my $nc = $uuid.chars;
 #say "DEBUG uuid: '$uuid', chars: $nc" if $debug; #  > 1;
 # remove hyphens
@@ -111,3 +101,5 @@ $hex = 'e90cdff8d6714c529efead7dfea22262';
 lives-ok {
     $hex = rebase $hex, 16, 62, 22;
 }
+
+done-testing;

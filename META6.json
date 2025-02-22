@@ -7,7 +7,7 @@
   "build-depends": [
   ],
   "depends": [
-    "LibUUID"
+    "UUID::V4"
   ],
   "description": "Provides number base transform functions",
   "license": "Artistic-2.0",
@@ -18,7 +18,7 @@
   },
   "resources": [
   ],
-  "source-url": "https://github.com/tbrowder/Number-Rebase-Raku.git",
+  "source-url": "https://github.com/tbrowder/Number-Rebase.git",
   "support": {
     "bugtracker": "https://github.com/tbrowder/Number-Rebase-Raku/issues"
   },

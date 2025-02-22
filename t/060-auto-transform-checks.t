@@ -2,8 +2,6 @@ use Test;
 
 use Number::Rebase :ALL;
 
-plan 456;
-
 my $debug = 0;
 
 my $suffix = True;
@@ -634,3 +632,6 @@ is rebase(8480244, 10, 62, :$suffix), "Za68_base-62", "base 62; test 453";
 is rebase("100000010110010111110100", 2, 62, :$suffix), "Za68_base-62", "base 62; test 454";
 is rebase("40262764", 8, 62, :$suffix), "Za68_base-62", "base 62; test 455";
 is rebase("8165F4", 16, 62, :$suffix), "Za68_base-62", "base 62; test 456";
+
+done-testing;
+

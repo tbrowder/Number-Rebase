@@ -1,10 +1,8 @@
 use Test;
 
-use LibUUID;
+use UUID::V4;
 
 use Number::Rebase :ALL;
-
-plan 4;
 
 my $hex = "ffffffffffffffffffffffffffffffff";
 is $hex.chars, 32;
@@ -12,7 +10,7 @@ lives-ok {
 	rebase $hex, 16, 62, 22;
 }
 
-my $uuid = UUID.new.Str;
+my $uuid = uuid-v4();
 my $nc = $uuid.chars;
 #say "DEBUG uuid: '$uuid', chars: $nc" if $debug; #  > 1;
 # remove hyphens
@@ -36,3 +34,6 @@ $hex = 'e90cdff8d6714c529efead7dfea22262';
 lives-ok {
     $hex = rebase $hex, 16, 62, 22;
 }
+
+done-testing;
+

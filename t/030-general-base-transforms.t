@@ -3,8 +3,6 @@ use Test;
 
 use Number::Rebase :ALL;
 
-plan 2210;
-
 my $prefix = True;
 my $LC     = True;
 
@@ -58,3 +56,6 @@ for @uints -> $dec {
         }
     }
 }
+
+done-testing;
+

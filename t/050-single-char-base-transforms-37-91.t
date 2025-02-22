@@ -3,8 +3,6 @@ use Test;
 
 use Number::Rebase :ALL;
 
-plan 90;
-
 # error conditions
 #dies-ok { rebase('Z', 40, 3), 2; }, "incorrect base number for input";
 
@@ -37,3 +35,5 @@ for $base..$last-base -> $base {
     # real func:
     #is rebase($tnum-in, $bi, $bo), $tnum-out, $tnum-out;
 }
+
+done-testing;
