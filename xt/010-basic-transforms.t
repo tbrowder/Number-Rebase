@@ -1,8 +1,10 @@
 use Test;
 
+# tests from the original Number::More
+
 use Number::Rebase :ALL;
 
-my $debug = 0;
+plan 180;
 
 my $LC = True;
 
@@ -41,5 +43,3 @@ for @uints -> $dec {
     is hex2oct($hex2), $oct, $oct;
     is hex2dec($hex2), $dec, $dec;
 }
-
-done-testing;

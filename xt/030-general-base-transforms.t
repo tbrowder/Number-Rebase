@@ -1,6 +1,10 @@
 use Test;
 
+# tests from the original Number::More
+
 use Number::Rebase :ALL;
+
+plan 2210;
 
 my $prefix = True;
 my $LC     = True;
@@ -55,6 +59,3 @@ for @uints -> $dec {
         }
     }
 }
-
-done-testing;
-

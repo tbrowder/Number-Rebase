@@ -1,8 +1,12 @@
 use Test;
 
+# tests from the original Number::More
+
 use Number::Rebase :ALL;
 
-$Number::More::LENGTH-HANDLING = 'waRn';
+$Number::More::LENGHT-HANDLING = 'waRn';
+
+plan 32;
 
 my $prefix = True;
 my $LC     = True;
@@ -47,6 +51,3 @@ is oct2hex('77', :$prefix, :$LC), '0x3f';
 my $suffix = True;
 is rebase('Z', 36, 3, :$suffix), '1022_base-3', "test suffix";
 is rebase('z', 62, 3, :$suffix), '2021_base-3', "test suffix";
-
-done-testing;
-

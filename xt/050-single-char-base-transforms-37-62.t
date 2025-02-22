@@ -1,13 +1,16 @@
 use Test;
 
+# tests from the original Number::More
+
 use Number::Rebase :ALL;
+
+plan 61;
 
 # error conditions
 #dies-ok { rebase('Z', 40, 3), 2; }, "incorrect base number for input";
 
-
 my $base      =  2;
-my $last-base = 91;
+my $last-base = 62;
 
 # default
 for $base..$last-base -> $base {
@@ -34,5 +37,3 @@ for $base..$last-base -> $base {
     # real func:
     #is rebase($tnum-in, $bi, $bo), $tnum-out, $tnum-out;
 }
-
-done-testing;
