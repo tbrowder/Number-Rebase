@@ -15,8 +15,11 @@ use Number::Rebase;
 
 This module provides some convenience functions to convert unsigned
 integers between different, commonly used number bases: decimal,
-hexadecimal, octal, and binary. There is also a function to convert
-between bases 2 through 91.
+hexadecimal, octal, and binary. 
+
+For completeness, this module's routines converts between
+between bases 2 through 91. The advantage of the highest base conversion
+is that much more compression when encoding binary data with ASCII characters.
 
 Note that bases greater than 36 will use a set of digits consisting of
 a case-sensitive set of ASCII characters in an array indexed from
@@ -41,8 +44,8 @@ As an example of the detail involved, any transformation from a
 non-decimal base to another non-decimal base requires an intermediate
 step to convert the first non-decimal number to decimal and then
 convert the decimal number to the final desired base.  In addition,
-adding prefixes, changing to lower-case where appropriate, and
-increasing lengths will involve more processing.
+adding prefixes, changing to lower-case where appropriate,
+increasing lengths, and handling fractions will involve more processing.
 
 The following illustrates the process using Raku routines for the
 example above:
@@ -50,7 +53,7 @@ example above:
 =begin code
 my $bin = '11001011';
 my $dec = parse-base $bin, 2;
-my $hex = $dec.base : 16;
+my $hex = $dec.base: 16;
 say $hex; # OUTPUT 'CB'
 =end code
 
@@ -65,11 +68,11 @@ characters.
 
 There is an optional parameter to define desired lengths of results
 (which will result in adding leading zeroes if needed).  There are
-named parameters to have results in lower-case (`:$LC`) for bases
+named parameters to have results in lower-case (C<:$LC>) for bases
 between 11 and 36 and add appropriate prefixes to transformed numbers
-(`:$prefix`) in bases 2 (binary), 8 (octal), and 16 (hecadecimal).
+(C<:$prefix>) in bases 2 (binary), 8 (octal), and 16 (hecadecimal).
 Note that requested prefixes will take up two characters in a
-requested length.  There is also an option (`:$suffix`) to add the
+requested length.  There is also an option (C<:$suffix>) to add the
 appropriate base suffix to any number, the result of which will look
 like this:
 
@@ -79,19 +82,13 @@ like this:
 
 The suffix overrides any requested prefix.
 
-The user can also set an environment variable to set the reponse to
+The user can define an environment variable to control the reponse to
 situations where the transformed length is greater than the requested
 length: (1) ignore and provide the required length (the default), (2)
 warn of the increased length but provide it, and (3) throw an
 exception and report the offending data.
 
-=head3 method rebase
-
-=begin code
-method rebase() returns Mu
-=end code
-
-The original extended character set (29 more chars) after base62
+The original extended character set (29 more characters) after base62
 to base91 (from L<https://base91.sourceforge.net/>):
 
 =begin code
@@ -106,7 +103,11 @@ period and the double quotation mark.
 =end code
 
 Then, for bases 2 through 90, the radix point is the period. For base 91 we
-provide a separate routine to return the integer and fractional parts separately.
+provide another routine to return the integer and fractional parts separately.
+
+=begin code
+      ... array ...
+=end code
 
 Following is the standard digit set for bases 2 through 91 (char 0 through 90).
 The array of digits is indexed by their decimal value.

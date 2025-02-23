@@ -15,7 +15,9 @@ use Number::Rebase;
 DESCRIPTION
 ===========
 
-This module provides some convenience functions to convert unsigned integers between different, commonly used number bases: decimal, hexadecimal, octal, and binary. There is also a function to convert between bases 2 through 91.
+This module provides some convenience functions to convert unsigned integers between different, commonly used number bases: decimal, hexadecimal, octal, and binary. 
+
+For completeness, this module's routines converts between between bases 2 through 91. The advantage of the highest base conversion is that much more compression when encoding binary data with ASCII characters.
 
 Note that bases greater than 36 will use a set of digits consisting of a case-sensitive set of ASCII characters in an array indexed from 0..base-1, and the reverse mapping is in a hash. Both exported variables are shown in [NUMBERS](./docs/NUMBERS.md).
 
@@ -25,13 +27,13 @@ The current subroutines are described in detail in [SUBS](./docs/SUBS.md) which 
 
 The functions in this module are recommended for users who don't want to have to deal with the messy code involved with such transformations and who want an easy interface to get the various results they may need.
 
-As an example of the detail involved, any transformation from a non-decimal base to another non-decimal base requires an intermediate step to convert the first non-decimal number to decimal and then convert the decimal number to the final desired base. In addition, adding prefixes, changing to lower-case where appropriate, and increasing lengths will involve more processing.
+As an example of the detail involved, any transformation from a non-decimal base to another non-decimal base requires an intermediate step to convert the first non-decimal number to decimal and then convert the decimal number to the final desired base. In addition, adding prefixes, changing to lower-case where appropriate, increasing lengths, and handling fractions will involve more processing.
 
 The following illustrates the process using Raku routines for the example above:
 
     my $bin = '11001011';
     my $dec = parse-base $bin, 2;
-    my $hex = $dec.base : 16;
+    my $hex = $dec.base: 16;
     say $hex; # OUTPUT 'CB'
 
 The default for each provided function is to take a string (valid decimals may be entered as numbers) representing a valid number in one base and transform it into the desired base with no leading zeroes or descriptive prefix (such as '0x', '0o', and '0b') to indicate the type of number. The default is also to use upper-case characters for the hexadecimal results and all bases greater than 10 and less than 37. Bases greater than 36 use a mixture of upper-case and lower-case characters.
@@ -42,13 +44,9 @@ There is an optional parameter to define desired lengths of results (which will 
 
 The suffix overrides any requested prefix.
 
-The user can also set an environment variable to set the reponse to situations where the transformed length is greater than the requested length: (1) ignore and provide the required length (the default), (2) warn of the increased length but provide it, and (3) throw an exception and report the offending data.
+The user can define an environment variable to control the reponse to situations where the transformed length is greater than the requested length: (1) ignore and provide the required length (the default), (2) warn of the increased length but provide it, and (3) throw an exception and report the offending data.
 
-### method rebase
-
-    method rebase() returns Mu
-
-The original extended character set (29 more chars) after base62 to base91 (from [https://base91.sourceforge.net/](https://base91.sourceforge.net/)):
+The original extended character set (29 more characters) after base62 to base91 (from [https://base91.sourceforge.net/](https://base91.sourceforge.net/)):
 
     ! # $ % & ( ) * + , . / : ; < = > ? @ [ ] ^ _ ` { | } ~ "
 
@@ -56,7 +54,9 @@ In order to use the period as the radix point for fractions we swap the period a
 
     ! # $ % & ( ) * + , " / : ; < = > ? @ [ ] ^ _ ` { | } ~ .
 
-Then, for bases 2 through 90, the radix point is the period. For base 91 we provide a separate routine to return the integer and fractional parts separately.
+Then, for bases 2 through 90, the radix point is the period. For base 91 we provide another routine to return the integer and fractional parts separately.
+
+          ... array ...
 
 Following is the standard digit set for bases 2 through 91 (char 0 through 90). The array of digits is indexed by their decimal value.
 
