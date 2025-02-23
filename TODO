@@ -3,6 +3,11 @@ Possible future features
 
 handle real numbers (i.e., signed and fractional)
 
+improve signature forms, names, return types, etc.
+
+improve docs
+  + signature descriptions
+
 allow addition and subtraction between two numbers with different bases (as
   long as no negative number will result)
   (note that Raku already allows that between decimal, octal, binary,
