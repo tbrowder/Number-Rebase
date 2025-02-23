@@ -642,10 +642,11 @@ sub rebase(
 } # rebase
 
 # str2num
-sub _to-dec-from-b37-b91($num,
-			 UInt $bi where { 36 < $bi < 92 }
-			 --> Cool
-			) is export(:_to-dec-from-b37-b91) {
+sub _to-dec-from-b37-b91(
+    $num,
+    UInt $bi where { 36 < $bi < 92 },
+    --> Cool
+    ) is export(:_to-dec-from-b37-b91) {
 
     # see simple algorithm for base to dec:
     #`{
@@ -736,9 +737,11 @@ to convert between logarithms in different bases, the formula:
 =end comment
 #===========
 
-sub _from-dec-to-b37-b91(UInt $x'dec ,
-			 UInt $base-o where { 36 < $base-o < 92 }
-		         --> Str) is export(:_from-dec-to-b37-b91) {
+sub _from-dec-to-b37-b91(
+    UInt $x'dec ,
+    UInt $base-o where { 36 < $base-o < 92 },
+    --> Str
+    ) is export(:_from-dec-to-b37-b91) {
 
     # see Wolfram's solution (article Base, see notes above)
 
@@ -804,27 +807,29 @@ sub _from-dec-to-b37-b91(UInt $x'dec ,
 class NumRebase is export {
 
     # as originally input:
-    has $.num;
-    has $.base;
+    has $.number is required;    # may have a radix point
+    has UInt $.base is required; # 1 < base < 92
 
     # the decimal number resulting from the input
-    has $.integer;
+    has Int $.integer; # may be negative
     has $.fraction = 0;
 
-    method new($num, :$base) {
-        self.bless: :$num, :$base;
-    }
-
     submethod TWEAK {
-        if $!num ~~ /Int|Rat|Num/ {
+        my $num  = $!number;
+        my $base = $!base;
+        unless 1 < $base < 92 {
+            die "FATAL: 'base' must be > 1 and < 92, input was '$base'";
+        }
+        =begin comment
+        if $num ~~ /Int|Rat|Num/ {
             $!base = 10;
             # break into integer and fractional parts
-            if $!num ~~ Int {
-                $!integer  = $!num;
+            if $num ~~ Int {
+                $!integer  = $num;
             }
             else {
-                $!integer  = $!num.truncate;
-    #            $!fraction = frac $!num;
+                $!integer  = $num.truncate;
+                $!fraction = frac $num, :base(10);
             }
         }
         elsif $!base {
@@ -832,6 +837,7 @@ class NumRebase is export {
             die "FATAL: input '{$!num}' is NOT a string" if $!num !~~ /Str/;
             # check the number for the correct base
         }
+        =end comment
     }
 
 } # class NumRebase
@@ -943,9 +949,11 @@ sub frac(
 # Converts a string with a base (radix) of $base to its Numeric
 # (base 10) equivalent.
 
-sub str2num($num is copy,
-            UInt $base where 2..91
-            --> Numeric) is export(:str2num) {
+sub str2num(
+    $num is copy,
+    UInt $base where 2..91
+    --> Numeric
+    ) is export(:str2num) {
 
     if $num.^name ~~ /Num|Int|Rat/ {
         return $num;
@@ -981,7 +989,11 @@ sub str2num($num is copy,
 
 
 # this version looks excellent for the integer part!
-multi sub num2str(UInt:D $dec, UInt:D $base --> Str) is export(:num2str) {
+multi sub num2str(
+    UInt:D $dec, 
+    UInt:D $base 
+    --> Str
+    ) is export(:num2str) {
     my $int = '';
     my $rem = $dec;
     loop {
