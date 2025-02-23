@@ -54,7 +54,7 @@ example above:
 my $bin = '11001011';
 my $dec = parse-base $bin, 2;
 my $hex = $dec.base: 16;
-say $hex; # OUTPUT 'CB'
+say $hex; # OUTPUT «CB␤»
 =end code
 
 The default for each provided function is to take a string (valid
@@ -106,6 +106,9 @@ Then, for bases 2 through 90, the radix point is the period. For base
 91 we provide another routine to return the integer and fractional
 parts separately.
 
+Following is the standard digit set for bases 2 through 91 (character
+0 through 90).  The array of digits is indexed by their decimal value.
+
 =begin code
 our @dec2digit is export(:dec2digit) = [
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', # 10
@@ -121,12 +124,9 @@ our @dec2digit is export(:dec2digit) = [
 ];
 =end code
 
-Following is the standard digit set for bases 2 through 91 (char 0
-through 90).  The array of digits is indexed by their decimal value.
-
-Following is the standard digit set for bases 2 through 91 (char 0
-through 90).  The hash is comprised of digit keys and their decimal
-value.
+Following is the standard digit set for bases 2 through 91 (character
+0 through 90), but inverted to show the array index value for the
+character as the hash key:
 
 =begin code
 our %digit2dec is export(:digit2dec) = %(
@@ -142,6 +142,33 @@ our %digit2dec is export(:digit2dec) = %(
     '.' => 90,                                                                                                    # 91
 );
 =end code
+
+=head2 class Number::Rebase::NumObj
+
+The module provides a class to ease base conversions when handling
+fractional values:
+
+=begin code
+class NumObj is export {
+
+    # Original input:
+    has      $.number is required;    # may have a radix point
+    has UInt $.base where is required; # 1 < base < 92
+
+    submethod TWEAK {...}
+
+    # The decimal number resulting after the TWEAK:
+    has Int $.integer;      # may be negative
+    has     $.fraction = 0;
+
+    # Methods
+    method to-base(UInt $base)   {...}
+    method from-base(UInt $base) {...}
+    method multiply-by($num)     {...}
+    method divide-by($num)       {...}
+}
+=end code
+
 
 =head1 AUTHOR
 

@@ -16,7 +16,8 @@ for @uints -> $dec {
             # skip some here
             next if $bi eq $bo;
 
-            # use Perl 6 routines directly
+            # TODO:
+            # use Raku routines directly
             my ($tnum-in, $tnum-out);
             if $bi eq '10' {
                 $tnum-in  = $dec;
@@ -57,4 +58,3 @@ for @uints -> $dec {
 }
 
 done-testing;
-

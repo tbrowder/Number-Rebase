@@ -562,6 +562,7 @@ sub rebase(
         when $base-o == 16 { $bo = 'hex' }
     }
 
+    # TODO
     if $bi and $bo {
         note "\nNOTE: Use function '{$bi}2{$bo}' instead for an easier interface.";
     }
@@ -811,8 +812,8 @@ class NumObj is export {
     has UInt $.base is required; # 1 < base < 92
 
     # the decimal number resulting from the input
-    has Int $.integer; # may be negative
-    has $.fraction = 0;
+    has Int $.integer;      # may be negative
+    has     $.fraction = 0; # fractional part
 
     submethod TWEAK {
         my $num  = $!number;
@@ -838,6 +839,19 @@ class NumObj is export {
             # check the number for the correct base
         }
         =end comment
+    }
+
+    # Methods
+    method to-base(UInt $base) {
+    }
+
+    method from-base(UInt $base) {
+    }
+
+    method multiply-by($num) {
+    }
+
+    method divide-by($num) {
     }
 
 } # class NumRebase

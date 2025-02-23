@@ -3,6 +3,10 @@ Possible future features
 
 handle real numbers (i.e., signed and fractional)
 
+replace complex handling with simple one where possible
+  see TODO in lib/Number/Rebase.rakumod, ~ line 565
+  see TODO in t/3-general-base-transforms.t
+
 improve signature forms, names, return types, etc.
 
 improve docs
@@ -13,15 +17,19 @@ allow addition and subtraction between two numbers with different bases (as
   (note that Raku already allows that between decimal, octal, binary,
   and hexadecimal numbers)
 
-DONE: handle bases 37 through 62 (and possibly variants, see Wikipedia)
-
 add named param to add 'base-X' to a transformed number (position?)
-
-DONE: add bases higher than 62 with named digit sets
 
 allow user-defined digit sets
 
-add a Number class with defined operators +, -, div, mod, /, %, **, *
+add a Number class with
+   to/from base
+   multiply-by
+   divide-by
+   defined operators +, -, div, mod, /, %, **, *
 
 DONE: redo base91 alphabet to put decimal (radix) point char in last place
   in order to allow fractional representation for bases 2-90
+
+DONE: handle bases 37 through 62 (and possibly variants, see Wikipedia)
+
+DONE: add bases higher than 62 with named digit sets

@@ -34,7 +34,7 @@ The following illustrates the process using Raku routines for the example above:
     my $bin = '11001011';
     my $dec = parse-base $bin, 2;
     my $hex = $dec.base: 16;
-    say $hex; # OUTPUT 'CB'
+    say $hex; # OUTPUT «CB␤»
 
 The default for each provided function is to take a string (valid decimals may be entered as numbers) representing a valid number in one base and transform it into the desired base with no leading zeroes or descriptive prefix (such as '0x', '0o', and '0b') to indicate the type of number. The default is also to use upper-case characters for the hexadecimal results and all bases greater than 10 and less than 37. Bases greater than 36 use a mixture of upper-case and lower-case characters.
 
@@ -56,6 +56,8 @@ In order to use the period as the radix point for fractions we swap the period a
 
 Then, for bases 2 through 90, the radix point is the period. For base 91 we provide another routine to return the integer and fractional parts separately.
 
+Following is the standard digit set for bases 2 through 91 (character 0 through 90). The array of digits is indexed by their decimal value.
+
     our @dec2digit is export(:dec2digit) = [
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', # 10
         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', # 20
@@ -69,9 +71,7 @@ Then, for bases 2 through 90, the radix point is the period. For base 91 we prov
         '.',                                              # 91
     ];
 
-Following is the standard digit set for bases 2 through 91 (char 0 through 90). The array of digits is indexed by their decimal value.
-
-Following is the standard digit set for bases 2 through 91 (char 0 through 90). The hash is comprised of digit keys and their decimal value.
+Following is the standard digit set for bases 2 through 91 (character 0 through 90), but inverted to show the array index value for the character as the hash key:
 
     our %digit2dec is export(:digit2dec) = %(
         '0' =>  0, '1' =>  1, '2' =>  2, '3' =>  3, '4' =>  4, '5' =>  5, '6' =>  6, '7' =>  7, '8' =>  8, '9' =>  9, # 10
@@ -85,6 +85,30 @@ Following is the standard digit set for bases 2 through 91 (char 0 through 90). 
         '@' => 80, '[' => 81, ']' => 82, '^' => 83, '_' => 84, '`' => 85, '{' => 86, '|' => 87, '}' => 88, '~' => 89, # 90
         '.' => 90,                                                                                                    # 91
     );
+
+class Number::Rebase::NumObj
+----------------------------
+
+The module provides a class to ease base conversions when handling fractional values:
+
+    class NumObj is export {
+
+        # Original input:
+        has      $.number is required;    # may have a radix point
+        has UInt $.base where is required; # 1 < base < 92
+
+        submethod TWEAK {...}
+
+        # The decimal number resulting after the TWEAK:
+        has Int $.integer;      # may be negative
+        has     $.fraction = 0;
+
+        # Methods
+        method to-base(UInt $base)   {...}
+        method from-base(UInt $base) {...}
+        method multiply-by($num)     {...}
+        method divide-by($num)       {...}
+    }
 
 AUTHOR
 ======
