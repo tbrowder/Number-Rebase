@@ -197,7 +197,7 @@ our @dec2digit is export(:dec2digit) = [
 
 #| Standard digit set for bases 2 through 91 (char 0 through 91).
 #| The hash is comprised of digit keys and their decimal value.
-our %digit2dec is export(:digit2dec) = [
+our %digit2dec is export(:digit2dec) = %(
     '0' =>  0, '1' =>  1, '2' =>  2, '3' =>  3, '4' =>  4, '5' =>  5, '6' =>  6, '7' =>  7, '8' =>  8, '9' =>  9, # 10
     'A' => 10, 'B' => 11, 'C' => 12, 'D' => 13, 'E' => 14, 'F' => 15, 'G' => 16, 'H' => 17, 'I' => 18, 'J' => 19, # 20
     'K' => 20, 'L' => 21, 'M' => 22, 'N' => 23, 'O' => 24, 'P' => 25, 'Q' => 26, 'R' => 27, 'S' => 28, 'T' => 29, # 30
@@ -208,7 +208,7 @@ our %digit2dec is export(:digit2dec) = [
     '+' => 70, ',' => 71, '"' => 72, '/' => 73, ':' => 74, ';' => 75, '<' => 76, '=' => 77, '>' => 78, '?' => 79, # 80
     '@' => 80, '[' => 81, ']' => 82, '^' => 83, '_' => 84, '`' => 85, '{' => 86, '|' => 87, '}' => 88, '~' => 89, # 90
     '.' => 90,                                                                                                    # 91
-];
+);
 
 our token base { ^ 2|8|10|16 $ }
 
@@ -845,8 +845,8 @@ class NumObj is export {
 # exportable subs
 
 multi parts(
-    $n, 
-    :$debug 
+    $n,
+    :$debug
     --> List
     ) is export(:parts) {
 
@@ -858,9 +858,9 @@ multi parts(
 } # end multi parts
 
 multi parts(
-    $n, 
-    $int is rw, 
-    $frac is rw, 
+    $n,
+    $int is rw,
+    $frac is rw,
     :$debug
     ) is export(:parts) {
 
@@ -870,8 +870,8 @@ multi parts(
 } # end multi parts
 
 sub frac(
-    $n, 
-    :$base = 0, 
+    $n,
+    :$base = 0,
     :$debug,
     ) is export(:frac) {
 
@@ -990,8 +990,8 @@ sub str2num(
 
 # this version looks excellent for the integer part!
 multi sub num2str(
-    UInt:D $dec, 
-    UInt:D $base 
+    UInt:D $dec,
+    UInt:D $base
     --> Str
     ) is export(:num2str) {
     my $int = '';
