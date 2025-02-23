@@ -804,7 +804,7 @@ sub _from-dec-to-b37-b91(
 } # _from-dec-to-b37-b91
 
 
-class NumRebase is export {
+class NumObj is export {
 
     # as originally input:
     has $.number is required;    # may have a radix point
