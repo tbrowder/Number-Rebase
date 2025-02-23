@@ -195,7 +195,7 @@ our @dec2digit is export(:dec2digit) = [
     '.',                                              # 91
     ];
 
-#| Standard digit set for bases 2 through 91 (char 0 through 90).
+#| Standard digit set for bases 2 through 91 (char 0 through 91).
 #| The hash is comprised of digit keys and their decimal value.
 our %digit2dec is export(:digit2dec) = [
     '0' =>  0, '1' =>  1, '2' =>  2, '3' =>  3, '4' =>  4, '5' =>  5, '6' =>  6, '7' =>  7, '8' =>  8, '9' =>  9, # 10

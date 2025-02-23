@@ -3,6 +3,7 @@
 =head1 NAME
 
 B<Number::Rebase> provides routines to manipulate numbers of differing bases
+from 2 to 91
 
 =head1 SYNOPSIS
 

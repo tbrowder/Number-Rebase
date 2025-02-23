@@ -3,7 +3,7 @@
 NAME
 ====
 
-**Number::Rebase** provides routines to manipulate numbers of differing bases
+**Number::Rebase** provides routines to manipulate numbers of differing bases from 2 to 91
 
 SYNOPSIS
 ========
