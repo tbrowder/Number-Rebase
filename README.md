@@ -17,22 +17,22 @@ DESCRIPTION
 
 This module provides some convenience functions to convert unsigned integers between different, commonly used number bases: decimal, hexadecimal, octal, and binary.
 
-For completeness, this module's routines converts between between bases 2 through 91. The advantage of the highest base conversion is that much more compression when encoding binary data with ASCII characters.
+For completeness, this module's routines converts between bases 2 through 91. The advantage of the highest base conversion is that much more compression is available than when encoding binary data with ASCII characters.
 
-Note that bases greater than 36 will use a set of digits consisting of a case-sensitive set of ASCII characters in an array indexed from 0..base-1, and the reverse mapping is in a hash. Both exported variables are shown in [NUMBERS](./docs/NUMBERS.md).
-
-Also included in that document is more information on other exported variables, number systems (and references), and their use in this module.
+Note that bases greater than 36 will use a digits consisting of a case-sensitive set of ASCII characters in an array indexed from 0..base-1, and the reverse mapping is in a hash. Both exported variables are shown below as well in [NUMBERS](./docs/NUMBERS.md). Also included in that document is more information on other exported variables, number systems (and references), and their use in this module.
 
 The current subroutines are described in detail in [SUBS](./docs/SUBS.md) which shows a short description of each exported routine along along with its complete signature.
 
 The functions in this module are recommended for users who don't want to have to deal with the messy code involved with such transformations and who want an easy interface to get the various results they may need.
 
-As an example of the detail involved, any transformation from a non-decimal base to another non-decimal base requires an intermediate step to convert the first non-decimal number to decimal and then convert the decimal number to the final desired base. In addition, adding prefixes, changing to lower-case where appropriate, increasing lengths, and handling fractions will involve more processing.
+As an example of the detail involved, any transformation from a non-decimal base to another non-decimal base requires an intermediate step to convert the first non-decimal number to decimal, and then convert the decimal number to the final desired base. In addition, adding prefixes, changing to lower-case where appropriate, increasing lengths, and handling fractions will involve more processing.
 
 The following illustrates the process using Raku routines for the example above:
 
     my $bin = '11001011';
-    my $dec = parse-base $bin, 2;
+    my $dec = $bin.parse-base: 2;
+    say $dec; # OUTPUT: «203␤»
+
     my $hex = $dec.base: 16;
     say $hex; # OUTPUT «CB␤»
 
@@ -89,13 +89,13 @@ Following is the standard digit set for bases 2 through 91 (character 0 through 
 class Number::Rebase::NumObj
 ----------------------------
 
-The module provides a class to ease base conversions when handling fractional values:
+The module provides a class to ease base conversions when handling integral or fractional values. Currently, fractional numbers are handled from base 2 to base 36 using Raku's core routines. A future version may handle higher bases.
 
     class NumObj is export {
 
         # Original input:
-        has      $.number is required;    # may have a radix point
-        has UInt $.base where is required; # 1 < base < 92
+        has      $.number is required; # may have a radix point
+        has UInt $.base where { 1 < $.base < 92 } is required;
 
         submethod TWEAK {...}
 

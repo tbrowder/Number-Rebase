@@ -838,6 +838,7 @@ class NumObj is export {
     #   digit * $base^digit-place
     # 
     # where digit-place is (Npositive-digit - 1)..0 . -1..-(Nnegative-digit)
+
     method to-base($number, Numeric :$base --> List) {
         # Use Raku directly if base is < 37
         my ($integer, $fraction) = $number.split: '.';
@@ -862,7 +863,6 @@ class NumObj is export {
         my @np = (0..^@D.elems).reverse; 
         my @d  = $fraction ?? $fraction.comb !! [];
         my @nn = 1..@d.elems;
-
         for @D.kv -> $i, $d {
             my $exp = @np[$i];
             my $v = $d * exp($exp, $base);
@@ -878,10 +878,44 @@ class NumObj is export {
         $int, $dec;
     }
 
-    method multiply-by($num) {
+    multi method multiply-by(
+        $num, 
+        :$base!
+        ) {
+    }
+    multi method multiply-by(
+        NumObj $o, 
+        ) {
     }
 
-    method divide-by($num) {
+    multi method divide-by(
+        $numi,
+        :$base!
+        ) {
+    }
+    multi method divide-by(
+        NumObj $o
+        ) {
+    }
+
+    multi method add(
+        $num,
+        :$base!
+        ) {
+    }
+    multi method add(
+        NumObj $o
+        ) {
+    }
+
+    multi method subtract(
+        $num,
+        :$base!
+        ) {
+    }
+    multi method subtract(
+        NumObj $o
+        ) {
     }
 
 } # class NumRebase
