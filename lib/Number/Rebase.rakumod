@@ -838,16 +838,31 @@ class NumObj is export {
     #   digit * $base^digit-place
     # 
     # where digit-place is (Npositive-digit - 1)..0 . -1..-(Nnegative-digit)
-    method to-base(Numeric $number, Numeric :$base --> List) {
+    method to-base($number, Numeric :$base --> List) {
+        # Use Raku directly if base is < 37
         my ($integer, $fraction) = $number.split: '.';
 
+        if $fraction and $base > 36 {
+            die "FATAL: Unable to handle real numbers with base > 36":
+        }
+
+        my $res = $number.parse-base: $base;
+        my ($int, $dec) = 0, 0;
+        if $fraction {
+            ($int, $dec) = $res.split: '.';
+            $dec = '0.' ~ $dec;
+        }
+        else {
+            $int = $res;
+            $dec = 0;
+        }
+
+        =begin comment
         my @D  = $integer.comb;
         my @np = (0..^@D.elems).reverse; 
         my @d  = $fraction ?? $fraction.comb !! [];
         my @nn = 1..@d.elems;
 
-        my $int = 0;
-        my $dec = 0;
         for @D.kv -> $i, $d {
             my $exp = @np[$i];
             my $v = $d * exp($exp, $base);
@@ -858,6 +873,8 @@ class NumObj is export {
             my $v = $d * exp($exp, $base);
             $dec += $v;
         }
+        =end comment
+
         $int, $dec;
     }
 

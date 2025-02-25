@@ -52,9 +52,8 @@ example above:
 =begin code
 my $bin = '11001011';
 my $dec = $bin.parse-base: 2;
-say $dec; # OUTPUT: 
-203
-:
+say $dec; # OUTPUT: «203␤»
+
 my $hex = $dec.base: 16;
 say $hex; # OUTPUT «CB␤»
 =end code
@@ -148,14 +147,17 @@ our %digit2dec is export(:digit2dec) = %(
 =head2 class Number::Rebase::NumObj
 
 The module provides a class to ease base conversions when handling
-fractional values:
+integral or fractional values. Currently, fractional numbers are handled
+from base 2 to base 36 using Raku's core routines. A future 
+version may handle higher bases.
+
 
 =begin code
 class NumObj is export {
 
     # Original input:
-    has      $.number is required;    # may have a radix point
-    has UInt $.base where is required; # 1 < base < 92
+    has      $.number is required; # may have a radix point
+    has UInt $.base where { 1 < $.base < 92 } is required;
 
     submethod TWEAK {...}
 
