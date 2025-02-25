@@ -808,44 +808,57 @@ sub _from-dec-to-b37-b91(
 class NumObj is export {
 
     # as originally input:
-    has $.number is required;    # may have a radix point
-    has UInt $.base is required; # 1 < base < 92
+    has      $.number is required; # may have a radix point
+    has      $.base   is required; # 1 < base < 92
 
     # the decimal number resulting from the input
-    has Int $.integer;      # may be negative
+    has     $.sign;         # +1 or -1
+    has     $.integer;      # may be negative
     has     $.fraction = 0; # fractional part
 
     submethod TWEAK {
-        my $num  = $!number;
-        my $base = $!base;
-        unless 1 < $base < 92 {
-            die "FATAL: 'base' must be > 1 and < 92, input was '$base'";
+        if $!number < 0 {
+            $!sign     = -1;
+            $!integer *= -1;
         }
-        =begin comment
-        if $num ~~ /Int|Rat|Num/ {
-            $!base = 10;
-            # break into integer and fractional parts
-            if $num ~~ Int {
-                $!integer  = $num;
-            }
-            else {
-                $!integer  = $num.truncate;
-                $!fraction = frac $num, :base(10);
-            }
+        else {
+            $!sign     = +1;
         }
-        elsif $!base {
-            # then the input number must be a string
-            die "FATAL: input '{$!num}' is NOT a string" if $!num !~~ /Str/;
-            # check the number for the correct base
+        unless 1 < $!base < 92 {
+            die "FATAL: 'base' must be > 1 and < 92, input was '$!base'";
         }
-        =end comment
+        ($!integer, $!fraction) = self.to-base: $!number, :base($!base);
     }
 
     # Methods
-    method to-base(UInt $base) {
-    }
+    #
+    # Following the referenced paper, express the integral and fractional
+    # parts as sum of each digit as a power:
+    #
+    #   digit * $base^digit-place
+    # 
+    # where digit-place is (Npositive-digit - 1)..0 . -1..-(Nnegative-digit)
+    method to-base(Numeric $number, Numeric :$base --> List) {
+        my ($integer, $fraction) = $number.split: '.';
 
-    method from-base(UInt $base) {
+        my @D  = $integer.comb;
+        my @np = (0..^@D.elems).reverse; 
+        my @d  = $fraction ?? $fraction.comb !! [];
+        my @nn = 1..@d.elems;
+
+        my $int = 0;
+        my $dec = 0;
+        for @D.kv -> $i, $d {
+            my $exp = @np[$i];
+            my $v = $d * exp($exp, $base);
+            $int += $v;
+        }
+        for @d.kv -> $i, $d  {
+            my $exp = -1 * @nn[$i];
+            my $v = $d * exp($exp, $base);
+            $dec += $v;
+        }
+        $int, $dec;
     }
 
     method multiply-by($num) {

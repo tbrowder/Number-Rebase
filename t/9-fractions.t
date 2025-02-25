@@ -17,16 +17,27 @@ my @onums = <42 42.1>;
 my @dnums = <42 42.1>;
 my @hnums = <42 42.1 e2 e2.a>;
 
+for @dnums -> $number {
+    $o = Number::Rebase::NumObj.new: :$number, :base(10);
+    isa-ok $o, Number::Rebase::NumObj;
+    if $number == 42 {
+        is $o.integer.Int, 42, "integer: 42";
+        is $o.fraction, 0, "fraction: 0";
+    }
+    else {
+        is $o.integer.Int, 42, "integer: 42";
+        is $o.fraction, 0.1, "fraction: 0.1";
+    }
+}
+done-testing;
+=finish
+
 for @bnums -> $number {
     $o = Number::Rebase::NumObj.new: :$number, :base(2);
     isa-ok $o, Number::Rebase::NumObj;
 }
 for @onums -> $number {
     $o = Number::Rebase::NumObj.new: :$number, :base(8);
-    isa-ok $o, Number::Rebase::NumObj;
-}
-for @dnums -> $number {
-    $o = Number::Rebase::NumObj.new: :$number, :base(10);
     isa-ok $o, Number::Rebase::NumObj;
 }
 for @hnums -> $number {

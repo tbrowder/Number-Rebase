@@ -17,16 +17,15 @@ This module provides some convenience functions to convert unsigned
 integers between different, commonly used number bases: decimal,
 hexadecimal, octal, and binary.
 
-For completeness, this module's routines converts between between
+For completeness, this module's routines converts between
 bases 2 through 91. The advantage of the highest base conversion is
-that much more compression when encoding binary data with ASCII
-characters.
+that much more compression is available than when encoding 
+binary data with ASCII characters.
 
-Note that bases greater than 36 will use a set of digits consisting of
+Note that bases greater than 36 will use a digits consisting of
 a case-sensitive set of ASCII characters in an array indexed from
 0..base-1, and the reverse mapping is in a hash.  Both exported
-variables are shown in [NUMBERS](./docs/NUMBERS.md).
-
+variables are shown below as well in [NUMBERS](./docs/NUMBERS.md).
 Also included in that document is more information on other exported
 variables, number systems (and references), and their use in this
 module.
@@ -42,8 +41,8 @@ need.
 
 As an example of the detail involved, any transformation from a
 non-decimal base to another non-decimal base requires an intermediate
-step to convert the first non-decimal number to decimal and then
-convert the decimal number to the final desired base.  In addition,
+step to convert the first non-decimal number to decimal, and then
+convert the decimal number to the final desired base. In addition,
 adding prefixes, changing to lower-case where appropriate, increasing
 lengths, and handling fractions will involve more processing.
 
@@ -52,7 +51,10 @@ example above:
 
 =begin code
 my $bin = '11001011';
-my $dec = parse-base $bin, 2;
+my $dec = $bin.parse-base: 2;
+say $dec; # OUTPUT: 
+203
+:
 my $hex = $dec.base: 16;
 say $hex; # OUTPUT «CB␤»
 =end code
